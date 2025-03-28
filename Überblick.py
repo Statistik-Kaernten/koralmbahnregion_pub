@@ -53,3 +53,10 @@ with col4:
         st.write(f'''
                  Die Koralmbahnregion, Definition Joanneum Research.  
                  ''')
+
+# pre-load data
+data_lst = ['bevoelkerung', 'wanderungen', "wohnungen", "erwerbstaetige", "arbeitsstaetten", "tourismus", "schueler", "hoest_ausbildung", "verkehrszaehlung"]
+for elem in data_lst:
+    df = get_data(f'{elem}.csv')
+    print(df)
+    print(elem, ' loaded')

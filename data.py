@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from misc.gkzList import gkzList
 
-@st.cache_data        
+@st.cache_data  
 def get_data(fileName: str) -> pd.DataFrame:
     df: pd.DataFrame = pd.read_csv(f'data/{fileName}', sep=';', decimal=',')
     return df
