@@ -33,9 +33,9 @@ with st.sidebar:
     with st.expander(f''':orange[**INFO**]''', expanded=False):
         st.write(f'''
                  Dashboard Koralmbahnregionsindex, BETA-Version 1.0 vom 28.03.2025, erstellt von Martin Writz, BSc.,
-                 Landesstelel für Statistik, Amt der Kärntner Landesregierung in Zusammenarbeit mit der Landesstelle für Statistik, Land Steiermark
+                 Landesstelle für Statistik, Amt der Kärntner Landesregierung in Zusammenarbeit mit der Landesstelle für Statistik, Land Steiermark
 
-                please report bugs to martin.writz@ktn.gv.at or abt1.statistik@ktn.gv.at, feel free to contribute or to commit a pull request directly  
+                please report bugs to martin.writz@ktn.gv.at or abt1.statistik@ktn.gv.at, feel free to contribute or commit a pull request directly  
                  ''')
 
 ## CONTENT    
