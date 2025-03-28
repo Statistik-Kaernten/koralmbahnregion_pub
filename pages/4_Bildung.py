@@ -1,6 +1,6 @@
 from data import *
 import altair as alt
-from misc.customize import *
+from customize import *
 
 # PAGE CONSTANTS
 START_JAHR: int = 2011

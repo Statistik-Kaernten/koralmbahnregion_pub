@@ -1,7 +1,7 @@
 import streamlit as st
 from data import *
 import altair as alt
-from misc.customize import *
+from customize import *
 from misc.gkzList import *
 
 
