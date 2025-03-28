@@ -20,7 +20,7 @@ with st.sidebar:
     selected_jahre: int = st.slider("Startjahr",
             min_value=START_JAHR,
             max_value=END_JAHR-1,
-            value=(END_JAHR-10, END_JAHR),
+            value=(START_JAHR, END_JAHR),
             step=1)
     
     select_start_jahr: int = selected_jahre[0]
