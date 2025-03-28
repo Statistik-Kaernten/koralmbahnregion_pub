@@ -1,14 +1,29 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import numpy as np
 #from sklearn.linear_model import LinearRegression
 #from bokeh.plotting import figure
 #from bokeh.io import show
 #from bokeh.models import ColumnDataSource
 #from bokeh.layouts import column
 
-def LinearRegression():
-    return None
+def LinearRegression(df: pd.DataFrame) -> pd.DataFrame:
+
+    df['DATUM'] = pd.to_datetime(df['DATUM'])
+    df['DAYS_NUMERIC'] = (df['DATUM'] - df['DATUM'].min()).dt.days
+
+    x_mean = np.mean(df['DAYS_NUMERIC'])
+    df['ANZAHL'] = df['ANZAHL'].astype(float)
+    y_mean = np.mean(df['ANZAHL'])
+
+    numerator = np.sum((df['DAYS_NUMERIC'] - x_mean) * (df['ANZAHL'] - y_mean))
+    denominator = np.sum((df['DAYS_NUMERIC'] - x_mean) ** 2)
+    m = numerator / denominator
+    b = y_mean - m * x_mean
+
+    df['REGRESSION'] = m * df['DAYS_NUMERIC'] + b
+    return df
 
 def handle_comma(txt: str) -> str:
     return txt 
@@ -76,12 +91,9 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
 def verkehr_anpassen(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(['JAHR', 'MONAT'])
     df['DAYS'] = (df['DATUM'] - df['DATUM'].min()).dt.days
-    regression = LinearRegression()
-    regression.fit(df[['DAYS']], df['ANZAHL'])
-    df['REGRESSION'] = regression.predict(df[['DAYS']])
-    df['REGRESSION'] = df['REGRESSION'].astype(float)
+    df = LinearRegression(df)
     df.drop(columns=['JAHR', 'MONAT', 'DAYS'], inplace=True, axis=1)
     return df
 
 if __name__ == '__main__':
-    print(add_thousand_dot('372618960'))
+    pass
