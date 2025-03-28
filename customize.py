@@ -1,11 +1,14 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from sklearn.linear_model import LinearRegression
+#from sklearn.linear_model import LinearRegression
 #from bokeh.plotting import figure
 #from bokeh.io import show
 #from bokeh.models import ColumnDataSource
 #from bokeh.layouts import column
+
+def LinearRegression():
+    return None
 
 def handle_comma(txt: str) -> str:
     return txt 
