@@ -58,5 +58,3 @@ with col4:
 data_lst = ['bevoelkerung', 'wanderungen', "wohnungen", "erwerbstaetige", "arbeitsstaetten", "tourismus", "schueler", "hoest_ausbildung", "verkehrszaehlung"]
 for elem in data_lst:
     df = get_data(f'{elem}.csv')
-    print(df)
-    print(elem, ' loaded')
