@@ -204,7 +204,7 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
 y=alt.Y('ANZAHL:Q', title='Anzahl'),
 color=alt.Color('BAUPERIODE_A:N', 
-                title='Baupperiode', 
+                title='Bauperiode', 
                 sort=group_order, 
                 #legend=alt.Legend(orient='bottom',
                 #                direction='vertical',
