@@ -26,9 +26,9 @@ st.title("Koralmbahnregion-Dashboard Überblick")
 ## SIDEBAR
 with st.sidebar:
 
-    st.image("gfx/stat_ktn_logo.png", use_container_width=False, width=180)
+    st.image("gfx/stat_ktn_logo.png", use_container_width=True)
     st.text('')
-    st.image("gfx/stat_stmk_logo.png", use_container_width=False, width=180)
+    st.image("gfx/stat_stmk_logo.png", use_container_width=True)
     st.text('')
     with st.expander(f''':orange[**INFO**]''', expanded=False):
         st.write(f'''
