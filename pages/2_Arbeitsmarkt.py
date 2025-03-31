@@ -113,7 +113,9 @@ df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 line_chart = alt.Chart(df).mark_line().encode(
     x=alt.X('JAHR:O', title='Jahr'),
     y=alt.Y('sum(ANZAHL)', title='Anzahl').scale(type="log"),
-    color=alt.Color('GRUPPE:N', sort=group_order),
+    color=alt.Color('GRUPPE:N', 
+                    sort=group_order,
+                    scale=alt.Scale(range=palette)),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('GRUPPE:N', title='Arbeitsstätte'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
@@ -131,6 +133,7 @@ df = get_data('arbeitslose.csv')
 df = filter_gkz(df, 'GKZ')
 df = df.groupby(['DATUM', 'GESCHLECHT']).agg({'ANZAHL': 'sum'}).reset_index()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
+
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('DATUM:O', title='Jahr'),  
     y=alt.Y('ANZAHL:Q', title='Anzahl'), 
