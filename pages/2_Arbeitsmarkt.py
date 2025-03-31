@@ -2,6 +2,19 @@ from data import *
 import altair as alt
 from customize import *
 
+tourismus_palette = ['#7586ff', 
+                 '#98a9ff', 
+                 '#c8d9ff',  
+                 '#afe1f4', 
+                 '#ffc556', 
+                 '#ffbf00', 
+                 '#f6977a',
+                 '#fa8072',
+                 '#f9cb9c', 
+                 '#feeece',
+                 '#003783', 
+                 '#00076d',]
+
 # PAGE CONSTANTS
 START_JAHR: int = 2004
 END_JAHR: int = 2025
@@ -180,7 +193,7 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
         color=alt.Color(
             'MONAT:N', 
             title='Monat', 
-            scale=alt.Scale(range=palette),
+            scale=alt.Scale(range=tourismus_palette),
             legend=None
         ),
         order=alt.Order('JAHR:N', sort='ascending'),
