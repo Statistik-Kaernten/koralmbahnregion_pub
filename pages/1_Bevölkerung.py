@@ -44,19 +44,19 @@ df.replace({'0-19': 'bis 20 Jahre', '20-64': 'zw. 20 und 64 Jahren', '65+': 'üb
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 st.write("#### Einwohner nach Altersgruppen")
-group_order = ['bis 20 Jahre', 'zw. 20 und 64 Jahren','über 65 Jahre']
+group_order = ['bis 20 Jahre', 'zw. 20 und 64 Jahren', 'über 65 Jahre']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
 y=alt.Y('ANZAHL:Q', title='Anzahl'),
 color=alt.Color('GRUPPE:N', 
                 title='Altersgruppe', 
                 sort=group_order, 
+                scale=alt.Scale(domain=group_order, range=palette),
                 legend=alt.Legend(orient='bottom',
                                 direction='vertical',
-                                columns=1 ), 
-                scale=alt.Scale(range=palette)),
-order=alt.Order('ANZAHL:Q', 
-                sort='descending'),
+                                columns=3)),
+order=alt.Order('GRUPPE:N', 
+                sort='ascending'),
 tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
          alt.Tooltip('GRUPPE:N', title='Altersgruppe'),
          alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')],
@@ -97,10 +97,10 @@ df_saldo = df.groupby('JAHR', as_index=False)['ANZAHL'].sum()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
-only_line_chart = alt.Chart(df_saldo).mark_line().encode(
+only_line_chart = alt.Chart(df_saldo).mark_line(size=5).encode(
     x='JAHR:O',
     y='ANZAHL:Q',
-    color=alt.value('red'),  # Set color for the line
+    color=alt.value('#cc79a7'),  # Set color for the line
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]
 )
@@ -111,7 +111,7 @@ only_line_chart = alt.Chart(df_saldo).mark_line().encode(
 #    dy=-10 # Adjust the vertical position of the text (up or down from the points)
 #).encode(
 #    x='JAHR:O',
- #   y='ANZAHL_FORMATTED:Q',
+#    y='ANZAHL_FORMATTED:Q',
 #    text='ANZAHL_FORMATTED'
 #)
 
@@ -139,23 +139,37 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
     y='y'
 )
 
-combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line)
+selected_saldo = st.checkbox('Wanderungssaldo', True)
+if (selected_saldo == True):
+    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line)
+else:
+    combined_chart = alt.layer(stacked_bar_chart, white_line)
 
 st.altair_chart(combined_chart, use_container_width=True)
 
 ### GRUNDSTÜCKSPREISE ###
 st.write("#### Durchschnittliche Grundstückspreise")
 df = get_data('grundstueckspreise.csv')
+print(df)
 df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-df = df.groupby('JAHR').agg({'Preis': 'mean'}).reset_index()
+df = df.groupby(['JAHR', 'GEMTYPE']).agg({'Preis': 'mean'}).reset_index()
 df['Preis'] = df['Preis'].apply(lambda x: handle_comma(round(x, 1)))
+
 line_chart = alt.Chart(df).mark_line().encode(
-    x='JAHR:O',
+    x=alt.X('JAHR:O', title='Jahr'),
     y='Preis:Q',
-    color=alt.value('red'),  # Set color for the line
+    color=alt.Color('GEMTYPE:N', title='Gemeinden mit ...',
+                    legend=alt.Legend(orient='bottom',
+                    direction='vertical',
+                    columns=2),
+                    scale=alt.Scale(range=[palette[0], palette[1], palette[2], palette[3]])),  
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis:Q', title='Preis')]
+).properties(
+    width=800,
+    height=600
 )
+
 st.altair_chart(line_chart, use_container_width=True)
 
 ### WOHNUNGEN ###

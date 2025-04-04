@@ -60,8 +60,11 @@ def custom_css_sytles():
     """, unsafe_allow_html=True)
 
 def get_palette():
+    cud_colors = ['#003B5C', '#FFB81C', '#55B0B9', '#F56D8D', '#9E2A2F', '#5B8C5A']
+    own_cud_colors = ['#e69f00', '#56b4e9', '#f0e442', '#d55e00', '#009e73', '#000000', '#0072b2']
+    return cud_colors#['#000000', '#000000', '#000000', '#000000']
+    return ['#FFBF00', '#6495ED', '#9FE2BF', '#CCCCFF', '#DE3163']
     return ['#ea9010', '#344e41', '#0b1d51', '#ee6c4d', '#bc6c25']
-    #return ['#333333', '#777777', '#007722']
 
 
 def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:

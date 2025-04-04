@@ -40,20 +40,20 @@ df = df.groupby(['JAHR', 'HOEST_AUSBILDUNG']).agg({'ANZAHL': 'sum'}).reset_index
 df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
 df['ANTEIL'] = round(df['ANZAHL'] / df['JAHR_TOTAL'] * 100, 2)
 
-
-
+print(df)
+group_order = ['Pflichtschule', 'Lehrabschluss', 'Mittlere und höhere Schule', 'Hochschule und Akademie']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
 y=alt.Y('ANTEIL:Q', title='Anteil'),
 color=alt.Color('HOEST_AUSBILDUNG:N', 
                 title='Höchste Ausbildung', 
-                #sort=group_order, 
+                sort=group_order, 
                 legend=alt.Legend(orient='bottom',
                                 direction='vertical',
                                 columns=2), 
-                scale=alt.Scale(range=palette)),
-order=alt.Order('ANTEIL:Q', 
-                sort='descending'),
+                scale=alt.Scale(domain=group_order, range=palette)),
+order=alt.Order('HOEST_AUSBILDUNG:N', 
+                sort='ascending'),
 tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
          alt.Tooltip('HOEST_AUSBILDUNG:N', title='Höchste Ausbildung'),
          alt.Tooltip('ANTEIL:Q', title='Anteil')],
