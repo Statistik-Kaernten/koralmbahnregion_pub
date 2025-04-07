@@ -48,22 +48,22 @@ with st.sidebar:
 st.write('#### Ein- und  Auspendler')
 df = get_data('erwerbstaetige.csv')
 
-df['dem_hws_gcd'] = df['dem_hws_gcd'].astype(str)
-df['ast_gcd'] = df['ast_gcd'].astype(str)
-df = df[~((df['dem_hws_gcd'].isin(gkzList['gkz'])) & (df['ast_gcd'].isin(gkzList['gkz'])))] # Binnenpendler innerhalb Koralmregion
+#df['dem_hws_gcd'] = df['dem_hws_gcd'].astype(str)
+#df['ast_gcd'] = df['ast_gcd'].astype(str)
+#df = df[~((df['dem_hws_gcd'].isin(gkzList['gkz'])) & (df['ast_gcd'].isin(gkzList['gkz'])))] # Binnenpendler innerhalb Koralmregion
     
-df['TYPE'] = df.apply(lambda row:   'Auspendler KTN/STK' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (row['ast_gcd'].startswith('2') or row['ast_gcd'].startswith('6')) else
-                                        'Einpendler KTN/STK' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (row['dem_hws_gcd'].startswith('2') or row['dem_hws_gcd'].startswith('6'))  else
-                                        'Auspendler Ö' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (not row['ast_gcd'].startswith('2') or not row['ast_gcd'].startswith('6')) else
-                                        'Einpendler Ö' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (not row['dem_hws_gcd'].startswith('2') or not row['dem_hws_gcd'].startswith('6')) else
-                                        0, axis=1)
-df = df[df['TYPE'] != 0]
+#df['TYPE'] = df.apply(lambda row:   'Auspendler KTN/STK' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (row['ast_gcd'].startswith('2') or row['ast_gcd'].startswith('6')) else
+#                                        'Einpendler KTN/STK' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (row['dem_hws_gcd'].startswith('2') or row['dem_hws_gcd'].startswith('6'))  else
+#                                        'Auspendler Ö' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (not row['ast_gcd'].startswith('2') or not row['ast_gcd'].startswith('6')) else
+#                                        'Einpendler Ö' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (not row['dem_hws_gcd'].startswith('2') or not row['dem_hws_gcd'].startswith('6')) else
+#                                        0, axis=1)
+#df = df[df['TYPE'] != 0]
 
 #df = df.groupby(['JAHR', 'SEKTOR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
-df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
+#df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
 
-auspendList = ['Auspendler KTN/STK', 'Auspendler Ö']
-df.loc[df['TYPE'].isin(auspendList), 'ANZAHL'] = -df['ANZAHL']
+#auspendList = ['Auspendler KTN/STK', 'Auspendler Ö']
+#df.loc[df['TYPE'].isin(auspendList), 'ANZAHL'] = -df['ANZAHL']
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 
 df_saldo = df.groupby('JAHR', as_index=False)['ANZAHL'].sum()
@@ -75,7 +75,7 @@ df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_d
 line_chart = alt.Chart(df_saldo).mark_line().encode(
     x='JAHR:O',
     y='ANZAHL:Q',
-    color=alt.value('red'),  # Set color for the line
+    color=alt.value(palette[6]),  # Set color for the line
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]
 )
 

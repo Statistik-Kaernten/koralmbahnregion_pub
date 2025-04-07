@@ -33,14 +33,14 @@ with st.sidebar:
 
 ## BEVÖLKERUNG NACH ALTER
 df = get_data('bevoelkerung.csv')
-df = filter_gkz(df, 'GKZ')
+#df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 
-df['GKZ'] = df['GKZ'].astype(str)
-df['JAHR'] = df['JAHR'].astype(str)
-df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
-df = df[['JAHR', 'GRUPPE', 'ANZAHL']]
-df.replace({'0-19': 'bis 20 Jahre', '20-64': 'zw. 20 und 64 Jahren', '65+': 'über 65 Jahre'}, inplace=True)
+#df['GKZ'] = df['GKZ'].astype(str)
+#df['JAHR'] = df['JAHR'].astype(str)
+#df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
+#df = df[['JAHR', 'GRUPPE', 'ANZAHL']]
+#df.replace({'0-19': 'bis 20 Jahre', '20-64': 'zw. 20 und 64 Jahren', '65+': 'über 65 Jahre'}, inplace=True)
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 st.write("#### Einwohner nach Altersgruppen")
@@ -71,28 +71,30 @@ st.altair_chart(stacked_bar_chart, use_container_width=True)
 st.write("#### Wanderungen nach Wanderungstyp")
 df = get_data('wanderungen.csv')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-df['ort_je_h'] = df['ort_je_h'].astype(str)
-df['ort_je_z'] = df['ort_je_z'].astype(str)
+#df['ort_je_h'] = df['ort_je_h'].astype(str)
+#df['ort_je_z'] = df['ort_je_z'].astype(str)
 
-df = df[~((df['ort_je_h'].isin(gkzList['gkz'])) & (df['ort_je_z'].isin(gkzList['gkz'])))]
+#df = df[~((df['ort_je_h'].isin(gkzList['gkz'])) & (df['ort_je_z'].isin(gkzList['gkz'])))]
  # Umzüge innerhalb Koralmregion
 
-df['ZUAB'] = df.apply(lambda row: 1 if row['ort_je_h'] in gkzList['gkz'] else 2 if row['ort_je_z'] in gkzList['gkz'] else 0, axis=1)
-df = df[df['ZUAB'] != 0]
-df['TYPE'] = df.apply(lambda row:   'Abwanderung KTN/STK' if row['ZUAB'] == 1 and len(row['ort_je_z']) == 5 and (row['ort_je_z'].startswith('2') or row['ort_je_z'].startswith('6')) else
-                                        'Zuwanderung KTN/STK' if row['ZUAB'] == 2 and len(row['ort_je_h']) == 5 and (row['ort_je_h'].startswith('2') or row['ort_je_h'].startswith('6')) else
-                                        'Abwanderung Ö' if row['ZUAB'] == 1 and len(row['ort_je_z']) == 5 and (not row['ort_je_z'].startswith('2') or not row['ort_je_z'].startswith('6')) else
-                                        'Zuwanderung Ö' if row['ZUAB'] == 2 and len(row['ort_je_h']) == 5 and (not row['ort_je_h'].startswith('2') or not row['ort_je_h'].startswith('6')) else
-                                        'Abwanderung Ausland' if row['ZUAB'] == 1 and len(row['ort_je_z']) != 5 else
-                                        'Zuwanderung Ausland' if row['ZUAB'] == 2 and len(row['ort_je_h']) != 5 else
-                                        0, axis=1 )
+#df['ZUAB'] = df.apply(lambda row: 1 if row['ort_je_h'] in gkzList['gkz'] else 2 if row['ort_je_z'] in gkzList['gkz'] else 0, axis=1)
+#df = df[df['ZUAB'] != 0]
+#df['TYPE'] = df.apply(lambda row:   'Abwanderung KTN/STK' if row['ZUAB'] == 1 and len(row['ort_je_z']) == 5 and (row['ort_je_z'].startswith('2') or row['ort_je_z'].startswith('6')) else
+#                                        'Zuwanderung KTN/STK' if row['ZUAB'] == 2 and len(row['ort_je_h']) == 5 and (row['ort_je_h'].startswith('2') or row['ort_je_h'].startswith('6')) else
+#                                        'Abwanderung Ö' if row['ZUAB'] == 1 and len(row['ort_je_z']) == 5 and (not row['ort_je_z'].startswith('2') or not row['ort_je_z'].startswith('6')) else
+#                                        'Zuwanderung Ö' if row['ZUAB'] == 2 and len(row['ort_je_h']) == 5 and (not row['ort_je_h'].startswith('2') or not row['ort_je_h'].startswith('6')) else
+#                                        'Abwanderung Ausland' if row['ZUAB'] == 1 and len(row['ort_je_z']) != 5 else
+#                                        'Zuwanderung Ausland' if row['ZUAB'] == 2 and len(row['ort_je_h']) != 5 else
+#                                        0, axis=1 )
 findmax = df.groupby('JAHR').agg({'ANZAHL': 'sum'}).reset_index()
 max_value = max(abs(findmax['ANZAHL'].min()), abs(findmax['ANZAHL'].max()))
-df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
-abwList = ['Abwanderung KTN/STK', 'Abwanderung Ö', 'Abwanderung Ausland']
-df.loc[df['TYPE'].isin(abwList), 'ANZAHL'] = -df['ANZAHL']
+
+#df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
+#abwList = ['Abwanderung KTN/STK', 'Abwanderung Ö', 'Abwanderung Ausland']
+#df.loc[df['TYPE'].isin(abwList), 'ANZAHL'] = -df['ANZAHL']
 
 df_saldo = df.groupby('JAHR', as_index=False)['ANZAHL'].sum()
+
 
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
@@ -100,7 +102,7 @@ df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_d
 only_line_chart = alt.Chart(df_saldo).mark_line(size=5).encode(
     x='JAHR:O',
     y='ANZAHL:Q',
-    color=alt.value('#cc79a7'),  # Set color for the line
+    color=alt.value(palette[6]),  # Set color for the line
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]
 )
@@ -116,17 +118,20 @@ only_line_chart = alt.Chart(df_saldo).mark_line(size=5).encode(
 #)
 
 #line_chart = only_line_chart + text_labels
-group_order = ['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', 'Abwanderung Ö', 'Zuwanderung Ausland', 'Abwaderung Ausland']
+group_order = ['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', 'Abwanderung Ö', 'Zuwanderung Ausland', 'Abwanderung Ausland']
+
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('JAHR:O', title='Jahr'),  
-    y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=[-max_value/2, max_value/2])), 
+    y=alt.Y('ANZAHL:Q', title='Anzahl', #scale=alt.Scale(domain=[-max_value/2, max_value/2])
+            ), 
     color=alt.Color('TYPE:N', 
-                    title='Wanderungstyp', 
+                     title='Wanderungstyp', 
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
                     columns=3), 
-                    scale=alt.Scale(range=[palette[0], palette[0], palette[1], palette[1], palette[2], palette[2]])),
+                    scale=alt.Scale(range=[palette[0], palette[0], palette[1], palette[1], palette[2], palette[2]])
+                   ),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('TYPE:N', title='Wanderungstyp'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')],
@@ -150,13 +155,12 @@ st.altair_chart(combined_chart, use_container_width=True)
 ### GRUNDSTÜCKSPREISE ###
 st.write("#### Durchschnittliche Grundstückspreise")
 df = get_data('grundstueckspreise.csv')
-print(df)
 df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 df = df.groupby(['JAHR', 'GEMTYPE']).agg({'Preis': 'mean'}).reset_index()
 df['Preis'] = df['Preis'].apply(lambda x: handle_comma(round(x, 1)))
 
-line_chart = alt.Chart(df).mark_line().encode(
+line_chart = alt.Chart(df).mark_line(size=5).encode(
     x=alt.X('JAHR:O', title='Jahr'),
     y='Preis:Q',
     color=alt.Color('GEMTYPE:N', title='Gemeinden mit ...',
