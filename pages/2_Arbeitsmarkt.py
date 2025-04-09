@@ -72,7 +72,7 @@ group_order = ['Einpendler KTN/STK', 'Auspendler KTN/STK', 'Einpendler Ö', 'Aus
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
-line_chart = alt.Chart(df_saldo).mark_line().encode(
+line_chart = alt.Chart(df_saldo).mark_line(size=4).encode(
     x='JAHR:O',
     y='ANZAHL:Q',
     color=alt.value(palette[6]),  # Set color for the line
@@ -100,8 +100,10 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
     y='y'
 )
 
-combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).resolve_scale(
-    #y='independent'  # Use independent y-axes for the two layers
+combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(combined_chart, use_container_width=True)
@@ -111,8 +113,8 @@ st.altair_chart(combined_chart, use_container_width=True)
 st.write('#### Arbeitsstätten nach Größengruppen')
 
 df = get_data('arbeitsstaetten.csv')
-df = filter_gkz(df, 'GKZ')
-df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
+#df = filter_gkz(df, 'GKZ')
+#df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
 
 #line_chart = alt.Chart(df).mark_line().encode(
 #    x='JAHR:O',  # Ordinal scale for year
@@ -120,24 +122,30 @@ df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
 #    color='GRUPPE:N',  # Categorical scale for GRUPPE (this will assign different colors)
 #    tooltip=['JAHR', 'GRUPPE', 'ANZAHL']  # Optional: add tooltip for interactivity
 #)
-group_order = ['1 Beschäftigter', '2-4 Beschäftigte', '5-9 Beschäftigte', '10-19 Beschäftigte', '20-49 Beschäftigte', '50-99 Beschäftigte', '100-249 Beschäftigte', '250-499 Beschäftigte', '500-999 Beschäftigte', '1.000 und mehr Beschäftigte']
+#group_order = ['1 Beschäftigter', '2-4 Beschäftigte', '5-9 Beschäftigte', '10-19 Beschäftigte', '20-49 Beschäftigte', '50-99 Beschäftigte', '100-249 Beschäftigte', '250-499 Beschäftigte', '500-999 Beschäftigte', '1.000 und mehr Beschäftigte']
+group_order = ['Kleinstunternehmen', 'Kleinunternehmen', 'Mittlere Unternehmen', 'Großunternehmen']
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
-line_chart = alt.Chart(df).mark_line().encode(
+line_chart = alt.Chart(df).mark_line(size=4).encode(
     x=alt.X('JAHR:O', title='Jahr'),
     y=alt.Y('sum(ANZAHL)', title='Anzahl').scale(type="log"),
-    color=alt.Color('GRUPPE:N', 
+    color=alt.Color('TYPE:N', 
+                    title='Arbeitsstätten-Größengruppe',
                     sort=group_order,
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
                     columns=5),
                     scale=alt.Scale(range=palette)),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
-             alt.Tooltip('GRUPPE:N', title='Arbeitsstätte'),
+             alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
 ).properties(
     width=800,
     height=600
+).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(line_chart, use_container_width=True)
@@ -154,11 +162,11 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('DATUM:O', title='Jahr'),  
     y=alt.Y('ANZAHL:Q', title='Anzahl'), 
     color=alt.Color('GESCHLECHT:N', 
-                    title='Pendlertyp', 
+                    title='Geschlecht', 
                     #sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=1 ), 
+                    columns=2), 
                     scale=alt.Scale(range=palette)),
     tooltip=[alt.Tooltip('DATUM:O', title='Monat'), 
              alt.Tooltip('GESCHLECHT:N', title='Geschlecht'),
@@ -166,6 +174,10 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     ).properties(
     width=800,
     height=600
+).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)
@@ -197,7 +209,9 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
             'MONAT:N', 
             title='Monat', 
             scale=alt.Scale(range=tourismus_palette),
-            legend=None
+            legend=alt.Legend(orient='bottom',
+                    direction='vertical',
+                    columns=6), 
         ),
         order=alt.Order('JAHR:N', sort='ascending'),
         tooltip=[
@@ -215,6 +229,10 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     ).properties(
         width=800,
         height=600
+    ).configure_axis(
+    titleFontWeight='bold'  
+    ).configure_legend(
+        titleFontWeight='bold'  
     )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)

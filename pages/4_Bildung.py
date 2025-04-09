@@ -40,27 +40,32 @@ df = df.groupby(['JAHR', 'HOEST_AUSBILDUNG']).agg({'ANZAHL': 'sum'}).reset_index
 df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
 df['ANTEIL'] = round(df['ANZAHL'] / df['JAHR_TOTAL'] * 100, 2)
 
-print(df)
 group_order = ['Pflichtschule', 'Lehrabschluss', 'Mittlere und höhere Schule', 'Hochschule und Akademie']
+print(df)
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
 y=alt.Y('ANTEIL:Q', title='Anteil'),
 color=alt.Color('HOEST_AUSBILDUNG:N', 
-                title='Höchste Ausbildung', 
+                title='Höchste abg. Ausbildung', 
                 sort=group_order, 
                 legend=alt.Legend(orient='bottom',
                                 direction='vertical',
-                                columns=2), 
-                scale=alt.Scale(domain=group_order, range=palette)),
-order=alt.Order('HOEST_AUSBILDUNG:N', 
-                sort='ascending'),
+                                columns=4), 
+                scale=alt.Scale(domain=group_order, range=palette)
+                ),
+#order=alt.Order('HOEST_AUSBILDUNG:N', 
+#                sort='descending'),
 tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
          alt.Tooltip('HOEST_AUSBILDUNG:N', title='Höchste Ausbildung'),
          alt.Tooltip('ANTEIL:Q', title='Anteil')],
 ).properties(
 width=800,
 height=600
-)
+).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)
 
@@ -92,10 +97,10 @@ df_saldo = df.groupby('JAHR', as_index=False)['ANZAHL'].sum()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 df_saldo['ANZAHL_FORMATTED'] = df_saldo['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
-line_chart = alt.Chart(df_saldo).mark_line().encode(
+line_chart = alt.Chart(df_saldo).mark_line(size=4).encode(
     x='JAHR:O',
     y='ANZAHL:Q',
-    color=alt.value('red'),  # Set color for the line
+    color=alt.value(palette[6]),  # Set color for the line
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]
 )
@@ -122,8 +127,10 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
     y='y'
 )
 
-combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).resolve_scale(
-    #y='independent'  # Use independent y-axes for the two layers
-)
+combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
 st.altair_chart(combined_chart, use_container_width=True)
 

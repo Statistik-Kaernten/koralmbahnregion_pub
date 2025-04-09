@@ -86,6 +86,10 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
         combined_chart = alt.layer(chart, regression_line).encode(
             x='DATUM',
             y=alt.Y('ANZAHL:Q', scale=alt.Scale(domain=(y_min, y_max))),
+        ).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
         )
         return combined_chart
     

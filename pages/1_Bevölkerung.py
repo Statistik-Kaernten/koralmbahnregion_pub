@@ -63,6 +63,10 @@ tooltip=[alt.Tooltip('JAHR:O', title='Jahr'),
 ).properties(
 width=800,
 height=600
+).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)
@@ -146,9 +150,17 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
 
 selected_saldo = st.checkbox('Wanderungssaldo', True)
 if (selected_saldo == True):
-    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line)
+    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
 else:
-    combined_chart = alt.layer(stacked_bar_chart, white_line)
+    combined_chart = alt.layer(stacked_bar_chart, white_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
 
 st.altair_chart(combined_chart, use_container_width=True)
 
@@ -159,19 +171,26 @@ df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 df = df.groupby(['JAHR', 'GEMTYPE']).agg({'Preis': 'mean'}).reset_index()
 df['Preis'] = df['Preis'].apply(lambda x: handle_comma(round(x, 1)))
+group_order=['< 5.000 EW', '5.000 - 10.000 EW', '10.000 - 50.000 EW', '> 50.000 EW']
 
 line_chart = alt.Chart(df).mark_line(size=5).encode(
     x=alt.X('JAHR:O', title='Jahr'),
     y='Preis:Q',
-    color=alt.Color('GEMTYPE:N', title='Gemeinden mit ...',
+    color=alt.Color('GEMTYPE:N', 
+                    title='Gemeinden mit ...',
+                    sort=group_order,
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=2),
+                    columns=4),
                     scale=alt.Scale(range=[palette[0], palette[1], palette[2], palette[3]])),  
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis:Q', title='Preis')]
 ).properties(
     width=800,
     height=600
+).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(line_chart, use_container_width=True)
@@ -224,9 +243,9 @@ y=alt.Y('ANZAHL:Q', title='Anzahl'),
 color=alt.Color('BAUPERIODE_A:N', 
                 title='Bauperiode', 
                 sort=group_order, 
-                #legend=alt.Legend(orient='bottom',
-                #                direction='vertical',
-                #                columns=1 ), 
+                legend=alt.Legend(orient='bottom',
+                                direction='vertical',
+                                columns=8), 
                 scale=alt.Scale(range=palette)),
 order=alt.Order('ANZAHL:Q', 
                 sort='descending'),
@@ -236,6 +255,10 @@ tooltip=[alt.Tooltip('JAHR:O', title='Jahr'),
 ).properties(
 width=800,
 height=600
+).configure_axis(
+    titleFontWeight='bold'  
+).configure_legend(
+    titleFontWeight='bold'  
 )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)
