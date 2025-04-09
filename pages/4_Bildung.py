@@ -35,13 +35,13 @@ with st.sidebar:
 st.write('#### Höchste abgeschlossene Ausbildung der 20 bis 64-jährigen')
 
 df = get_data('hoest_ausbildung.csv')
-df = filter_gkz(df, 'GKZ')
-df = df.groupby(['JAHR', 'HOEST_AUSBILDUNG']).agg({'ANZAHL': 'sum'}).reset_index()
-df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
-df['ANTEIL'] = round(df['ANZAHL'] / df['JAHR_TOTAL'] * 100, 2)
-
+#df = filter_gkz(df, 'GKZ')
+#df = df.groupby(['JAHR', 'HOEST_AUSBILDUNG']).agg({'ANZAHL': 'sum'}).reset_index()
+#df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
+#df['ANTEIL'] = round(df['ANZAHL'] / df['JAHR_TOTAL'] * 100, 2)
+df['ANTEIL_FORMATTED'] = df['ANTEIL'].apply(lambda x: handle_comma(x))
 group_order = ['Pflichtschule', 'Lehrabschluss', 'Mittlere und höhere Schule', 'Hochschule und Akademie']
-print(df)
+
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
 y=alt.Y('ANTEIL:Q', title='Anteil'),
@@ -57,7 +57,7 @@ color=alt.Color('HOEST_AUSBILDUNG:N',
 #                sort='descending'),
 tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
          alt.Tooltip('HOEST_AUSBILDUNG:N', title='Höchste Ausbildung'),
-         alt.Tooltip('ANTEIL:Q', title='Anteil')],
+         alt.Tooltip('ANTEIL_FORMATTED:N', title='Anteil')],
 ).properties(
 width=800,
 height=600
@@ -73,22 +73,22 @@ st.altair_chart(stacked_bar_chart, use_container_width=True)
 st.write('#### Schülerpendler')
 df = get_data('schueler.csv')
 
-df['dem_hws_gcd'] = df['dem_hws_gcd'].astype(str)
-df['ast_gcd'] = df['ast_gcd'].astype(str)
-df = df[~(df['dem_hws_gcd'].isin(gkzList['gkz']) & df['ast_gcd'].isin(gkzList['gkz']))] # Binnenpendler innerhalb Koralmregion
+#df['dem_hws_gcd'] = df['dem_hws_gcd'].astype(str)
+#df['ast_gcd'] = df['ast_gcd'].astype(str)
+#df = df[~(df['dem_hws_gcd'].isin(gkzList['gkz']) & df['ast_gcd'].isin(gkzList['gkz']))] # Binnenpendler innerhalb Koralmregion
     
-df['TYPE'] = df.apply(lambda row:   'Auspendler KTN/STK' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (row['ast_gcd'].startswith('2') or row['ast_gcd'].startswith('6')) else
-                                        'Einpendler KTN/STK' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (row['dem_hws_gcd'].startswith('2') or row['dem_hws_gcd'].startswith('6'))  else
-                                        'Auspendler Ö' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (not row['ast_gcd'].startswith('2') or not row['ast_gcd'].startswith('6')) else
-                                        'Einpendler Ö' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (not row['dem_hws_gcd'].startswith('2') or not row['dem_hws_gcd'].startswith('6')) else
-                                        0, axis=1)
-df = df[df['TYPE'] != 0]
+#df['TYPE'] = df.apply(lambda row:   'Auspendler KTN/STK' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (row['ast_gcd'].startswith('2') or row['ast_gcd'].startswith('6')) else
+#                                        'Einpendler KTN/STK' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (row['dem_hws_gcd'].startswith('2') or row['dem_hws_gcd'].startswith('6'))  else
+#                                        'Auspendler Ö' if row['dem_hws_gcd'] in gkzList['gkz'] and row['ast_gcd'] not in gkzList['gkz'] and len(row['ast_gcd']) == 5 and (not row['ast_gcd'].startswith('2') or not row['ast_gcd'].startswith('6')) else
+#                                        'Einpendler Ö' if row['dem_hws_gcd'] not in gkzList['gkz'] and row['ast_gcd'] in gkzList['gkz'] and len(row['dem_hws_gcd']) == 5 and (not row['dem_hws_gcd'].startswith('2') or not row['dem_hws_gcd'].startswith('6')) else
+#                                        0, axis=1)
+#df = df[df['TYPE'] != 0]
 
-#df = df.groupby(['JAHR', 'SEKTOR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
-df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
+##df = df.groupby(['JAHR', 'SEKTOR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
+#df = df.groupby(['JAHR', 'TYPE']).agg({'ANZAHL': 'sum'}).reset_index()
 
-auspendList = ['Auspendler KTN/STK', 'Auspendler Ö']
-df.loc[df['TYPE'].isin(auspendList), 'ANZAHL'] = -df['ANZAHL']
+#auspendList = ['Auspendler KTN/STK', 'Auspendler Ö']
+#df.loc[df['TYPE'].isin(auspendList), 'ANZAHL'] = -df['ANZAHL']
 
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 

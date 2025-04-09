@@ -21,9 +21,7 @@ gkzList: dict[str:] = {'gkz': ['20101', '20201', '20402', '20403', '20405', '204
              '62382', '62383', '62384', '62385', '62388', '62389'],
             'flag': [1] * 186 }
 
-
-# TODO: um steirische Seite erweitern
-zaehlstellen_list: list[str] = ['581', '60', '591', '54', '585', '576', '569', '212', '563', '558', '551', '542', '534', '530']
+#zaehlstellen_list: list[str] = ['581', '60', '591', '54', '585', '576', '569', '212', '563', '558', '551', '542', '534', '530']
 zaehlstellen = {'350': 'A9: Schwarzlsee - Schachenwald', #A9
                 '463': 'A9: Leibnitz - Vogau Straß', #A9
                 '480': 'A2: Kn. Graz Ost - Graz Feldkirchen FH', #A2

@@ -167,10 +167,10 @@ st.altair_chart(combined_chart, use_container_width=True)
 ### GRUNDSTÜCKSPREISE ###
 st.write("#### Durchschnittliche Grundstückspreise")
 df = get_data('grundstueckspreise.csv')
-df = filter_gkz(df, 'GKZ')
+#df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-df = df.groupby(['JAHR', 'GEMTYPE']).agg({'Preis': 'mean'}).reset_index()
-df['Preis'] = df['Preis'].apply(lambda x: handle_comma(round(x, 1)))
+#df = df.groupby(['JAHR', 'GEMTYPE']).agg({'Preis': 'mean'}).reset_index()
+df['Preis_FORMATTED'] = df['Preis'].apply(lambda x: handle_comma(x))
 group_order=['< 5.000 EW', '5.000 - 10.000 EW', '10.000 - 50.000 EW', '> 50.000 EW']
 
 line_chart = alt.Chart(df).mark_line(size=5).encode(
@@ -183,7 +183,7 @@ line_chart = alt.Chart(df).mark_line(size=5).encode(
                     direction='vertical',
                     columns=4),
                     scale=alt.Scale(range=[palette[0], palette[1], palette[2], palette[3]])),  
-    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis:Q', title='Preis')]
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis_FORMATTED:N', title='Preis')]
 ).properties(
     width=800,
     height=600
@@ -198,42 +198,42 @@ st.altair_chart(line_chart, use_container_width=True)
 ### WOHNUNGEN ###
 st.write("#### Wohnungen nach Bauperiode")
 
-bauperiode_mapping = {'Vor 1919': 'bis 1960',
-                      '1919 bis 1944': 'bis 1960',
-                       '1945 bis 1960':  'bis 1960',
-                       '1961 bis 1970': '1961 bis 1970',
-                       '1971 bis 1980': '1971 bis 1980',
-                       '1981 bis 1990': '1981 bis 1990',
-                       '1991 bis 2000': '1991 bis 2000',
-                       '2001': '2001 bis 2010',
-                       '2002': '2001 bis 2010',
-                       '2003': '2001 bis 2010',
-                       '2004': '2001 bis 2010',
-                       '2005': '2001 bis 2010',
-                       '2006': '2001 bis 2010',
-                       '2007': '2001 bis 2010',
-                       '2008': '2001 bis 2010',
-                       '2009': '2001 bis 2010',
-                       '2010': '2001 bis 2010',
-                       '2011': '2011 bis 2020',
-                        '2012': '2011 bis 2020',
-                        '2013': '2011 bis 2020',
-                        '2014': '2011 bis 2020',
-                        '2015': '2011 bis 2020',
-                        '2016': '2011 bis 2020',
-                        '2017': '2011 bis 2020',
-                        '2018': '2011 bis 2020',
-                        '2019': '2011 bis 2020',
-                        '2020': '2011 bis 2020',
-                        '2021': '2021 bis 2022',
-                        '2022': '2021 bis 2022'}
+#bauperiode_mapping = {'Vor 1919': 'bis 1960',
+#                      '1919 bis 1944': 'bis 1960',
+#                       '1945 bis 1960':  'bis 1960',
+#                       '1961 bis 1970': '1961 bis 1970',
+#                       '1971 bis 1980': '1971 bis 1980',
+#                       '1981 bis 1990': '1981 bis 1990',
+#                       '1991 bis 2000': '1991 bis 2000',
+#                       '2001': '2001 bis 2010',
+#                       '2002': '2001 bis 2010',
+#                       '2003': '2001 bis 2010',
+#                       '2004': '2001 bis 2010',
+#                       '2005': '2001 bis 2010',
+#                       '2006': '2001 bis 2010',
+#                       '2007': '2001 bis 2010',
+#                       '2008': '2001 bis 2010',
+#                       '2009': '2001 bis 2010',
+#                       '2010': '2001 bis 2010',
+#                       '2011': '2011 bis 2020',
+#                        '2012': '2011 bis 2020',
+#                        '2013': '2011 bis 2020',
+#                        '2014': '2011 bis 2020',
+#                        '2015': '2011 bis 2020',
+#                        '2016': '2011 bis 2020',
+#                        '2017': '2011 bis 2020',
+#                        '2018': '2011 bis 2020',
+#                        '2019': '2011 bis 2020',
+#                        '2020': '2011 bis 2020',
+#                        '2021': '2021 bis 2022',
+#                        '2022': '2021 bis 2022'}
 
 
 df = get_data('wohnungen.csv')
-df = filter_gkz(df, 'GKZ')
+#df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-df['BAUPERIODE_A'] = df['BAUPERIODE'].apply(lambda x: bauperiode_mapping.get(x))
-df = df.groupby(['JAHR', 'BAUPERIODE_A']).agg({'ANZAHL': 'sum'}).reset_index()
+#df['BAUPERIODE_A'] = df['BAUPERIODE'].apply(lambda x: bauperiode_mapping.get(x))
+#df = df.groupby(['JAHR', 'BAUPERIODE_A']).agg({'ANZAHL': 'sum'}).reset_index()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 group_order = ['bis 1960']

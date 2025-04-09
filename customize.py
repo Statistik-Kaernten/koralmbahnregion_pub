@@ -25,8 +25,10 @@ def LinearRegression(df: pd.DataFrame) -> pd.DataFrame:
     df['REGRESSION'] = m * df['DAYS_NUMERIC'] + b
     return df
 
-def handle_comma(txt: str) -> str:
-    return txt 
+def handle_comma(input: float) -> str:
+    input = str(input).replace('.', ',')
+    return input
+
 
 def add_thousand_dot(txt: str) -> str:
     if(txt[0] == '-'):

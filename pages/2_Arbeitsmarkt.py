@@ -154,8 +154,8 @@ st.altair_chart(line_chart, use_container_width=True)
 st.write('#### Arbeitslose nach Geschlecht')
 
 df = get_data('arbeitslose.csv')
-df = filter_gkz(df, 'GKZ')
-df = df.groupby(['DATUM', 'GESCHLECHT']).agg({'ANZAHL': 'sum'}).reset_index()
+#df = filter_gkz(df, 'GKZ')
+#df = df.groupby(['DATUM', 'GESCHLECHT']).agg({'ANZAHL': 'sum'}).reset_index()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
