@@ -99,13 +99,26 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode(
     y='y'
 )
-
-combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).configure_axis(
-    titleFontWeight='bold'  
-).configure_legend(
-    titleFontWeight='bold'  
+hover_points = alt.Chart(df_saldo).mark_circle(size=HOVER_SIZE, opacity=HOVER_OPACITY).encode(
+    x='JAHR:O',
+    y='ANZAHL:Q',
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]  # Still works with tooltip
 )
 
+selected_saldo = st.checkbox('Pendlersaldo', True)
+if (selected_saldo == True):
+    combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line, hover_points).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
+else:
+    combined_chart = alt.layer(stacked_bar_chart, white_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
+    
 st.altair_chart(combined_chart, use_container_width=True)
 
 
@@ -128,7 +141,7 @@ df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 line_chart = alt.Chart(df).mark_line(size=4).encode(
     x=alt.X('JAHR:O', title='Jahr'),
-    y=alt.Y('sum(ANZAHL)', title='Anzahl').scale(type="log"),
+    y=alt.Y('sum(ANZAHL)', title='Anzahl (log)').scale(type="log"),
     color=alt.Color('TYPE:N', 
                     title='Arbeitsstätten-Größengruppe',
                     sort=group_order,
@@ -211,7 +224,20 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
             scale=alt.Scale(range=tourismus_palette),
             legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=6), 
+                    columns=6, 
+                    labelExpr='datum.value == "1" ? "Jänner" : '
+                  'datum.value == "2" ? "Feber" : '
+                  'datum.value == "3" ? "März" : '
+                  'datum.value == "4" ? "April" : '
+                  'datum.value == "5" ? "Mai" : '
+                  'datum.value == "6" ? "Juni" : '
+                  'datum.value == "7" ? "Juli" : '
+                  'datum.value == "8" ? "August" : '
+                  'datum.value == "9" ? "September" : '
+                  'datum.value == "10" ? "Oktober" : '
+                  'datum.value == "11" ? "November" : '
+                  'datum.value == "12" ? "Dezember" : datum.value'
+    ), 
         ),
         order=alt.Order('JAHR:N', sort='ascending'),
         tooltip=[

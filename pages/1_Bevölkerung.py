@@ -64,7 +64,7 @@ tooltip=[alt.Tooltip('JAHR:O', title='Jahr'),
 width=800,
 height=600
 ).configure_axis(
-    titleFontWeight='bold'  
+    titleFontWeight='bold'
 ).configure_legend(
     titleFontWeight='bold'  
 )
@@ -148,9 +148,15 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
     y='y'
 )
 
+hover_points = alt.Chart(df_saldo).mark_circle(size=HOVER_SIZE, opacity=HOVER_OPACITY).encode(
+    x='JAHR:O',
+    y='ANZAHL:Q',
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]  # Still works with tooltip
+)
+
 selected_saldo = st.checkbox('Wanderungssaldo', True)
 if (selected_saldo == True):
-    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line).configure_axis(
+    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line, hover_points).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
