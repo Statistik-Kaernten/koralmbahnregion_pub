@@ -40,7 +40,9 @@ df = get_data('hoest_ausbildung.csv')
 #df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
 #df['ANTEIL'] = round(df['ANZAHL'] / df['JAHR_TOTAL'] * 100, 2)
 df['ANTEIL_FORMATTED'] = df['ANTEIL'].apply(lambda x: handle_comma(x))
+order_map = ({'Pflichtschule': 1, 'Lehrabschluss': 2, 'Mittlere und höhere Schule': 3, 'Hochschule und Akademie': 4})
 group_order = ['Pflichtschule', 'Lehrabschluss', 'Mittlere und höhere Schule', 'Hochschule und Akademie']
+df['ORDER'] = df['HOEST_AUSBILDUNG'].apply(lambda x: order_map.get(x))
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
@@ -51,10 +53,10 @@ color=alt.Color('HOEST_AUSBILDUNG:N',
                 legend=alt.Legend(orient='bottom',
                                 direction='vertical',
                                 columns=4), 
-                scale=alt.Scale(domain=group_order, range=palette)
+                scale=alt.Scale(range=palette)
                 ),
-#order=alt.Order('HOEST_AUSBILDUNG:N', 
-#                sort='descending'),
+order=alt.Order('ORDER:O', 
+                sort='ascending'),
 tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
          alt.Tooltip('HOEST_AUSBILDUNG:N', title='Höchste Ausbildung'),
          alt.Tooltip('ANTEIL_FORMATTED:N', title='Anteil')],
@@ -68,7 +70,7 @@ height=600
         )
 
 st.altair_chart(stacked_bar_chart, use_container_width=True)
-
+df = df[['JAHR', 'HOEST_AUSBILDUNG', 'ANTEIL']]
 ### SCHÜLERPENDLER ###
 st.write('#### Schülerpendler')
 df = get_data('schueler.csv')
@@ -127,10 +129,25 @@ white_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='white').encode
     y='y'
 )
 
-combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line).configure_axis(
+hover_points = alt.Chart(df_saldo).mark_circle(size=HOVER_SIZE, opacity=HOVER_OPACITY).encode(
+    x='JAHR:O',
+    y='ANZAHL:Q',
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]  # Still works with tooltip
+)
+
+selected_saldo = st.checkbox('Pendlersaldo', True)
+if (selected_saldo == True):
+    combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line, hover_points).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
         )
+else:
+    combined_chart = alt.layer(stacked_bar_chart, white_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
+
 st.altair_chart(combined_chart, use_container_width=True)
 
