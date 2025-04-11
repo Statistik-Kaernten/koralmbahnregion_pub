@@ -152,7 +152,18 @@ line_chart = alt.Chart(df).mark_line(size=4).encode(
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
-).properties(
+)
+
+hover_points = alt.Chart(df).mark_circle(size=6000, opacity=0).encode(
+    x=alt.X('JAHR:O', title='Jahr'),
+    y=alt.Y('sum(ANZAHL)', title='Anzahl (log)').scale(type="log"),
+    color=alt.Color('TYPE:N'),
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
+             alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
+             alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
+)
+
+combined_chart = (line_chart + hover_points).properties(
     width=800,
     height=600
 ).configure_axis(
@@ -160,8 +171,7 @@ line_chart = alt.Chart(df).mark_line(size=4).encode(
 ).configure_legend(
     titleFontWeight='bold'  
 )
-
-st.altair_chart(line_chart, use_container_width=True)
+st.altair_chart(combined_chart, use_container_width=True)
 
 ### ARBEITSLOSE ###
 st.write('#### Arbeitslose nach Geschlecht')

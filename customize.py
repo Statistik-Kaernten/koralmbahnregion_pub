@@ -70,30 +70,38 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
     palette = get_palette()
     y_min = min(df['ANZAHL'].astype(float).min(), df['REGRESSION'].astype(float).min())
     y_max = max(df['ANZAHL'].astype(float).max(), df['REGRESSION'].astype(float).max())
+    df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
 
     chart = alt.Chart(df).mark_line(color=palette[1], size=4).encode(
         x=alt.X('DATUM:T', title='Datum', axis=alt.Axis(format='%Y-%m', labelAngle=-90)),
-        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max)))
+        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max))),
+        tooltip=[alt.Tooltip('DATUM:T', title='Datum'), 
+             #alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
+             alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
+
     )
-
-    if(reg == False):
-        return chart
-    else:
-
-        regression_line = alt.Chart(df).mark_line(color=palette[6], size=2).encode(
+    df['REG_FORMATTED'] = df['REGRESSION'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
+    regression_line = alt.Chart(df).mark_line(color=palette[6], size=2).encode(
             x=alt.X('DATUM:T'),
-            y=alt.Y('REGRESSION:Q', title="Trend")
+            y=alt.Y('REGRESSION:Q', title="Trend"),
+            tooltip=[alt.Tooltip('DATUM:T', title='Datum'),
+                     alt.Tooltip('REG_FORMATTED:O', title='Trend')]
         )
 
-        combined_chart = alt.layer(chart, regression_line).encode(
-            x='DATUM',
-            y=alt.Y('ANZAHL:Q', scale=alt.Scale(domain=(y_min, y_max))),
-        ).configure_axis(
+    if(reg == False):
+        combined_chart = (chart).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
         )
-        return combined_chart
+    else:
+        combined_chart = (chart + regression_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
+
+    return combined_chart
     
 def verkehr_anpassen(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(['JAHR', 'MONAT'])
