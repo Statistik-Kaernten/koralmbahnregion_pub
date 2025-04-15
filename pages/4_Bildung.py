@@ -4,7 +4,7 @@ from customize import *
 
 # PAGE CONSTANTS
 START_JAHR: int = 2011
-END_JAHR: int = 2022
+END_JAHR: int = 2023
 
 ## PAGE CONFIG
 st.set_page_config(page_title="Bildung in der Koralmbahnregion", layout="wide")
@@ -35,6 +35,7 @@ with st.sidebar:
 st.write('#### Höchste abgeschlossene Ausbildung der 20 bis 64-jährigen')
 
 df = get_data('hoest_ausbildung.csv')
+df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 #df = filter_gkz(df, 'GKZ')
 #df = df.groupby(['JAHR', 'HOEST_AUSBILDUNG']).agg({'ANZAHL': 'sum'}).reset_index()
 #df['JAHR_TOTAL'] = df.groupby('JAHR')['ANZAHL'].transform('sum')
@@ -68,8 +69,10 @@ height=600
         ).configure_legend(
             titleFontWeight='bold'  
         )
-
-st.altair_chart(stacked_bar_chart, use_container_width=True)
+if not df.empty:
+    st.altair_chart(stacked_bar_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 df = df[['JAHR', 'HOEST_AUSBILDUNG', 'ANTEIL']]
 ### SCHÜLERPENDLER ###
 st.write('#### Schülerpendler')
@@ -148,6 +151,7 @@ else:
         ).configure_legend(
             titleFontWeight='bold'  
         )
-
-st.altair_chart(combined_chart, use_container_width=True)
-
+if not df.empty:
+    st.altair_chart(combined_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)

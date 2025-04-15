@@ -32,6 +32,8 @@ with st.sidebar:
     st.text('')
 
 ## BEVÖLKERUNG NACH ALTER
+st.write("#### Einwohner nach Altersgruppen")
+
 df = get_data('bevoelkerung.csv')
 #df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
@@ -43,7 +45,6 @@ df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 #df.replace({'0-19': 'bis 20 Jahre', '20-64': 'zw. 20 und 64 Jahren', '65+': 'über 65 Jahre'}, inplace=True)
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
-st.write("#### Einwohner nach Altersgruppen")
 group_order = ['bis 20 Jahre', 'zw. 20 und 64 Jahren', 'über 65 Jahre']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr'),  
@@ -69,10 +70,15 @@ height=600
     titleFontWeight='bold'  
 )
 
-st.altair_chart(stacked_bar_chart, use_container_width=True)
-### WANDERUNGEN ###
+if not df.empty:
+    st.altair_chart(stacked_bar_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
+
+### WANDERUNGEN ###
 st.write("#### Wanderungen nach Wanderungstyp")
+
 df = get_data('wanderungen.csv')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 #df['ort_je_h'] = df['ort_je_h'].astype(str)
@@ -167,8 +173,11 @@ else:
         ).configure_legend(
             titleFontWeight='bold'  
         )
-
-st.altair_chart(combined_chart, use_container_width=True)
+    
+if not df.empty:
+    st.altair_chart(combined_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
 ### GRUNDSTÜCKSPREISE ###
 st.write("#### Durchschnittliche Grundstückspreise")
@@ -198,8 +207,10 @@ line_chart = alt.Chart(df).mark_line(size=5).encode(
 ).configure_legend(
     titleFontWeight='bold'  
 )
-
-st.altair_chart(line_chart, use_container_width=True)
+if not df.empty:
+    st.altair_chart(line_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
 ### WOHNUNGEN ###
 st.write("#### Wohnungen nach Bauperiode")
@@ -266,6 +277,8 @@ height=600
 ).configure_legend(
     titleFontWeight='bold'  
 )
-
-st.altair_chart(stacked_bar_chart, use_container_width=True)
+if not df.empty:
+    st.altair_chart(stacked_bar_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 #df = df.groupby('JAHR').agg({'Preis': 'mean'}).reset_index()

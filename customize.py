@@ -80,6 +80,14 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
 
     )
+
+    hover_points = alt.Chart(df).mark_circle(size=250, opacity=0).encode(
+    x=alt.X('DATUM:T', title='Datum'),
+    y=alt.Y('ANZAHL:Q', title='Anzahl'),
+    tooltip=[alt.Tooltip('DATUM:T', title='Jahr'), 
+             alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
+)
+
     df['REG_FORMATTED'] = df['REGRESSION'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
     regression_line = alt.Chart(df).mark_line(color=palette[6], size=2).encode(
             x=alt.X('DATUM:T'),
@@ -89,13 +97,13 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
         )
 
     if(reg == False):
-        combined_chart = (chart).configure_axis(
+        combined_chart = (chart + hover_points).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
         )
     else:
-        combined_chart = (chart + regression_line).configure_axis(
+        combined_chart = (chart + hover_points + regression_line).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  

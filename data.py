@@ -4,6 +4,8 @@ from misc.gkzList import gkzList
 
 HOVER_SIZE = 700
 HOVER_OPACITY = 0
+UNIVERSAL_END_YEAR = 2025
+NO_DATA = "Keine Daten für den gewünschten Zeitraum."
 
 @st.cache_data  
 def get_data(fileName: str) -> pd.DataFrame:

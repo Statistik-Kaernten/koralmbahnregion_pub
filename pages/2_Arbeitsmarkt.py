@@ -118,14 +118,16 @@ else:
         ).configure_legend(
             titleFontWeight='bold'  
         )
-    
-st.altair_chart(combined_chart, use_container_width=True)
-
+if not df.empty:
+    st.altair_chart(combined_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
 ### ARBEITSSTAETTEN ###
 st.write('#### Arbeitsstätten nach Größengruppen')
 
 df = get_data('arbeitsstaetten.csv')
+df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 #df = filter_gkz(df, 'GKZ')
 #df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
 
@@ -171,12 +173,19 @@ combined_chart = (line_chart + hover_points).properties(
 ).configure_legend(
     titleFontWeight='bold'  
 )
-st.altair_chart(combined_chart, use_container_width=True)
+if not df.empty:    
+    st.altair_chart(combined_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
 ### ARBEITSLOSE ###
 st.write('#### Arbeitslose nach Geschlecht')
 
 df = get_data('arbeitslose.csv')
+df['JAHR'] = df['DATUM'].str[:4]
+df['JAHR'] = df['JAHR'].astype(int)
+df = df[df['JAHR'] < UNIVERSAL_END_YEAR] 
+df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 #df = filter_gkz(df, 'GKZ')
 #df = df.groupby(['DATUM', 'GESCHLECHT']).agg({'ANZAHL': 'sum'}).reset_index()
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
@@ -202,8 +211,10 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 ).configure_legend(
     titleFontWeight='bold'  
 )
-
-st.altair_chart(stacked_bar_chart, use_container_width=True)
+if not df.empty:
+    st.altair_chart(stacked_bar_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
 
 
 ### TOURISMUS
@@ -212,13 +223,14 @@ st.write('#### Nächtigungen nach Monaten')
 monats_name_mapping = {'1': 'Jänner', '2': 'Feber', '3': 'März', '4':' April', '5': 'Mai', '6': 'Juni', '7': 'Juli', '8': 'August', '9': 'September', '10': 'Oktober', '11': 'November', '12': 'Dezember'}
 
 df = get_data('tourismus.csv')
-df = filter_gkz(df, 'GKZ')
+#df = filter_gkz(df, 'GKZ')
 df = df.groupby(['JAHR', 'MONAT']).agg({'UEBERNACHTUNGEN': 'sum'}).reset_index()
 
 #df = calcDifference(df, distance_for_calc_diff)
 df = df[df['JAHR'] >= select_start_jahr]
 df = df[df['JAHR'] <= select_end_jahr]
 #df = df[~((df['JAHR'] < select_start_jahr))]
+df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
 
 df['ANZAHL_FORMATTED'] = df['UEBERNACHTUNGEN'].apply(lambda x: add_thousand_dot(str(x)))
 df['MONAT_NAME'] = df['MONAT'].apply(lambda x: monats_name_mapping.get(str(x)))
@@ -270,5 +282,7 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     ).configure_legend(
         titleFontWeight='bold'  
     )
-
-st.altair_chart(stacked_bar_chart, use_container_width=True)
+if not df.empty:
+    st.altair_chart(stacked_bar_chart, use_container_width=True)
+else:
+    st.write(NO_DATA)
