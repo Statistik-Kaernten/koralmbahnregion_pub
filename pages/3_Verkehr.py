@@ -25,7 +25,6 @@ def select_messstelle(values: str) -> str:
     else:
         return None
     
-selected_value = st.sidebar.selectbox('Zählstelle:', zaehlstellen.values())
 
 #def min_startjahr() -> int:
 #    df: pd.DataFrame = get_data(100, 1900, 2100, st.session_state.first_choice, st.session_state.second_choice, select_messstelle(selected_value))
@@ -37,6 +36,8 @@ START_JAHR: int = 2012# min_startjahr()
 END_JAHR: int = 2024
 
 with st.sidebar:
+    selected_value = st.selectbox('Zählstelle:', zaehlstellen.values(), index=5)
+
     selected_jahre: int = st.slider("Startjahr",
             min_value=START_JAHR,
             max_value=END_JAHR-1,

@@ -21,22 +21,24 @@ gkzList: dict[str:] = {'gkz': ['20101', '20201', '20402', '20403', '20405', '204
              '62382', '62383', '62384', '62385', '62388', '62389'],
             'flag': [1] * 186 }
 
-
-# TODO: um steirische Seite erweitern
-zaehlstellen_list: list[str] = ['581', '60', '591', '54', '585', '576', '569', '212', '563', '558', '551', '542', '534', '530']
-zaehlstellen = {
-                '530': 'Packsattel - Bad St. Leonhard',
-                '534': 'Bad St. Leonhard - Wolfsberg Nord',
-                '542': 'Wolfsberg Süd - St. Andrä',
-                '551': 'St. Andrä - Griffen',
-                '558': 'Völkermarkt Ost - Völkermarkt West',
-                '563': 'Grafenstein - Klagenfurt Ost',
-                '212': 'Klagenfurt Nord - Klagenfurt West',
-                '569': 'Klagenfurt West - Krumpendorf West',
-                '576': 'Krumpendorf West - Pörtschach Ost',
-                '585': 'Pörtschach West - Velden Ost',
-                '54': 'Velden Ost - Velden West',
-                '591': 'Velden West - Wernberg',
-                '60': 'Wernberg - Kn. Villach',
-                '581': 'Kn. Villach - Villach Faaker See'
+#zaehlstellen_list: list[str] = ['581', '60', '591', '54', '585', '576', '569', '212', '563', '558', '551', '542', '534', '530']
+zaehlstellen = {'350': 'A9: Schwarzlsee - Schachenwald', #A9
+                '463': 'A9: Leibnitz - Vogau Straß', #A9
+                '480': 'A2: Kn. Graz Ost - Graz Feldkirchen FH', #A2
+                '886': 'A2: Kn. Graz West - Unterpremstätten', #A2
+                '395': 'A2: Mooskirchen - Steinberg', #A2
+                '530': 'A2: Packsattel - Bad St. Leonhard',
+                #'534': 'Bad St. Leonhard - Wolfsberg Nord',
+                '542': 'A2: Wolfsberg Süd - St. Andrä',
+                #'551': 'St. Andrä - Griffen',
+                #'558': 'Völkermarkt Ost - Völkermarkt West',
+                '563': 'A2: Grafenstein - Klagenfurt Ost',
+                '212': 'A2: Klagenfurt Nord - Klagenfurt West',
+                #'569': 'Klagenfurt West - Krumpendorf West',
+                #'576': 'Krumpendorf West - Pörtschach Ost',
+                #'585': 'Pörtschach West - Velden Ost',
+                #'54': 'Velden Ost - Velden West',
+                #'591': 'Velden West - Wernberg',
+                #'60': 'Wernberg - Kn. Villach',
+                #'581': 'Kn. Villach - Villach Faaker See'
                 }

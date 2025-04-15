@@ -25,8 +25,10 @@ def LinearRegression(df: pd.DataFrame) -> pd.DataFrame:
     df['REGRESSION'] = m * df['DAYS_NUMERIC'] + b
     return df
 
-def handle_comma(txt: str) -> str:
-    return txt 
+def handle_comma(input: float) -> str:
+    input = str(input).replace('.', ',')
+    return input
+
 
 def add_thousand_dot(txt: str) -> str:
     if(txt[0] == '-'):
@@ -60,33 +62,54 @@ def custom_css_sytles():
     """, unsafe_allow_html=True)
 
 def get_palette():
-    return ['#ea9010', '#344e41', '#0b1d51', '#ee6c4d', '#bc6c25']
-    #return ['#333333', '#777777', '#007722']
+    cud_colors = ['#003B5C', '#FFB81C', '#55B0B9', '#F56D8D', '#9E2A2F', '#5B8C5A', '#CC79A7']
+    return cud_colors
 
 
 def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
+    palette = get_palette()
     y_min = min(df['ANZAHL'].astype(float).min(), df['REGRESSION'].astype(float).min())
     y_max = max(df['ANZAHL'].astype(float).max(), df['REGRESSION'].astype(float).max())
+    df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
 
-    chart = alt.Chart(df).mark_line(color='#A9B84A').encode(
+    chart = alt.Chart(df).mark_line(color=palette[1], size=4).encode(
         x=alt.X('DATUM:T', title='Datum', axis=alt.Axis(format='%Y-%m', labelAngle=-90)),
-        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max)))
+        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max))),
+        tooltip=[alt.Tooltip('DATUM:T', title='Datum'), 
+             #alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
+             alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
+
     )
 
-    if(reg == False):
-        return chart
-    else:
+    hover_points = alt.Chart(df).mark_circle(size=250, opacity=0).encode(
+    x=alt.X('DATUM:T', title='Datum'),
+    y=alt.Y('ANZAHL:Q', title='Anzahl'),
+    tooltip=[alt.Tooltip('DATUM:T', title='Jahr'), 
+             alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
+)
 
-        regression_line = alt.Chart(df).mark_line(color='#E3000F').encode(
+    df['REG_FORMATTED'] = df['REGRESSION'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
+    regression_line = alt.Chart(df).mark_line(color=palette[6], size=2).encode(
             x=alt.X('DATUM:T'),
-            y=alt.Y('REGRESSION:Q', title="Trend")
+            y=alt.Y('REGRESSION:Q', title="Trend"),
+            tooltip=[alt.Tooltip('DATUM:T', title='Datum'),
+                     alt.Tooltip('REG_FORMATTED:O', title='Trend')]
         )
 
-        combined_chart = alt.layer(chart, regression_line).encode(
-            x='DATUM',
-            y=alt.Y('ANZAHL:Q', scale=alt.Scale(domain=(y_min, y_max))),
+    if(reg == False):
+        combined_chart = (chart + hover_points).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
         )
-        return combined_chart
+    else:
+        combined_chart = (chart + hover_points + regression_line).configure_axis(
+            titleFontWeight='bold'  
+        ).configure_legend(
+            titleFontWeight='bold'  
+        )
+
+    return combined_chart
     
 def verkehr_anpassen(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(['JAHR', 'MONAT'])

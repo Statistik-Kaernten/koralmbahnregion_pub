@@ -32,9 +32,11 @@ with st.sidebar:
     st.text('')
     with st.expander(f''':orange[**INFO**]''', expanded=False):
         st.write(f'''
-                 Dashboard Koralmbahnregionsindex, BETA-Version 1.0 vom 28.03.2025, erstellt von Martin Writz, BSc.,
+                 Dashboard Koralmbahnregionsindex, BETA-Version 1.1 vom 10.04.2025, erstellt von Martin Writz, BSc.,
                  Landesstelle für Statistik, Amt der Kärntner Landesregierung in Zusammenarbeit mit der Landesstelle für Statistik, Land Steiermark
 
+                Farbschema im Color Universal Design
+                 
                 please report bugs to martin.writz@ktn.gv.at or abt1.statistik@ktn.gv.at, feel free to contribute or commit a pull request directly  
                  ''')
 
