@@ -139,8 +139,9 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=3), 
-                    scale=alt.Scale(range=[palette[0], palette[0], palette[1], palette[1], palette[2], palette[2]])
+                    columns=4), 
+                    scale=alt.Scale(domain=['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', 'Abwanderung Ö', 'Zuwanderung Ausland', 'Abwanderung Ausland', 'Saldo'], 
+                                    range=[palette[0], palette[0], palette[1], palette[1], palette[2], palette[2], palette[6]])
                    ),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('TYPE:N', title='Wanderungstyp'),
@@ -160,24 +161,20 @@ hover_points = alt.Chart(df_saldo).mark_circle(size=HOVER_SIZE, opacity=HOVER_OP
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]  # Still works with tooltip
 )
 
-selected_saldo = st.checkbox('Wanderungssaldo', True)
-if (selected_saldo == True):
-    combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line, hover_points).configure_axis(
+#selected_saldo = st.checkbox('Wanderungssaldo', True, disabled=True)
+
+combined_chart = alt.layer(stacked_bar_chart, only_line_chart, white_line, hover_points).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
         )
-else:
-    combined_chart = alt.layer(stacked_bar_chart, white_line).configure_axis(
-            titleFontWeight='bold'  
-        ).configure_legend(
-            titleFontWeight='bold'  
-        )
-    
+
+
 if not df.empty:
     st.altair_chart(combined_chart, use_container_width=True)
 else:
     st.write(NO_DATA)
+
 
 ### GRUNDSTÜCKSPREISE ###
 st.write("#### Durchschnittliche Grundstückspreise")

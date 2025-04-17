@@ -118,8 +118,9 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=2), 
-                    scale=alt.Scale(range=[palette[0], palette[0], palette[1], palette[1]])),
+                    columns=3), 
+                    scale=alt.Scale(domain=['Einpendler KTN/STK', 'Auspendler KTN/STK', 'Einpendler Ö', 'Auspendler Ö', 'Saldo'], 
+                                    range=[palette[0], palette[0], palette[1], palette[1], palette[6]])),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
              alt.Tooltip('TYPE:N', title='Pendlertyp'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')],
@@ -138,19 +139,13 @@ hover_points = alt.Chart(df_saldo).mark_circle(size=HOVER_SIZE, opacity=HOVER_OP
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('ANZAHL_FORMATTED:N', title='Saldo')]  # Still works with tooltip
 )
 
-selected_saldo = st.checkbox('Pendlersaldo', True)
-if (selected_saldo == True):
-    combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line, hover_points).configure_axis(
+
+combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line, hover_points).configure_axis(
             titleFontWeight='bold'  
         ).configure_legend(
             titleFontWeight='bold'  
         )
-else:
-    combined_chart = alt.layer(stacked_bar_chart, white_line).configure_axis(
-            titleFontWeight='bold'  
-        ).configure_legend(
-            titleFontWeight='bold'  
-        )
+
 if not df.empty:
     st.altair_chart(combined_chart, use_container_width=True)
 else:
