@@ -73,7 +73,7 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
     df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
 
     chart = alt.Chart(df).mark_line(color=palette[1], size=4).encode(
-        x=alt.X('DATUM:T', title='Datum', axis=alt.Axis(format='%Y-%m', labelAngle=-90)),
+        x=alt.X('DATUM:T', title='Datum', axis=alt.Axis(format='%Y-%m', labelAngle=45)),
         y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max))),
         tooltip=[alt.Tooltip('DATUM:T', title='Datum'), 
              #alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
@@ -86,14 +86,15 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
     y=alt.Y('ANZAHL:Q', title='Anzahl'),
     tooltip=[alt.Tooltip('DATUM:T', title='Jahr'), 
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
-)
+    )
 
     df['REG_FORMATTED'] = df['REGRESSION'].apply(lambda x: add_thousand_dot(str(int(round(x, 0)))))
     regression_line = alt.Chart(df).mark_line(color=palette[6], size=2).encode(
             x=alt.X('DATUM:T'),
             y=alt.Y('REGRESSION:Q', title="Trend"),
-            tooltip=[alt.Tooltip('DATUM:T', title='Datum'),
-                     alt.Tooltip('REG_FORMATTED:O', title='Trend')]
+            tooltip=alt.value(None)
+            #[alt.Tooltip('DATUM:T', title='Datum'),
+            #         alt.Tooltip('REG_FORMATTED:O', title='Trend')]
         )
 
     if(reg == False):
@@ -118,5 +119,28 @@ def verkehr_anpassen(df: pd.DataFrame) -> pd.DataFrame:
     df.drop(columns=['JAHR', 'MONAT', 'DAYS'], inplace=True, axis=1)
     return df
 
+## custom locale
+
+custom_locale = {
+                "formatLocale": {
+                                "decimal": ",",
+                                "thousands": ".",
+                                "grouping": [3],
+                                "currency": ["", "\u00a0€"]
+                                },
+
+                "timeFormatLocale": {
+                                "dateTime": "%A, der %e. %B %Y, %X",
+                                "date": "%d.%m.%Y",
+                                "time": "%H:%M:%S",
+                                "periods": ["AM", "PM"],
+                                "days": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                                "shortDays": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                                "months": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                                "shortMonths": ["Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+                                    }
+                }
+                
+                
 if __name__ == '__main__':
     pass

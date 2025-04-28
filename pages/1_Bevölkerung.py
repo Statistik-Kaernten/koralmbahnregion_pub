@@ -26,49 +26,93 @@ with st.sidebar:
     select_start_jahr: int = selected_jahre[0]
     select_end_jahr: int = selected_jahre[1]
 
-    st.image("gfx/stat_ktn_logo.png", use_container_width=True)
+    st.image("gfx/stat_ktn_logo.png", width=190)
     st.text('')
-    st.image("gfx/stat_stmk_logo.png", use_container_width=True)
+    st.image("gfx/stat_stmk_logo.png", width=150)
     st.text('')
+    with st.expander(f''':orange[**INFO**]''', expanded=False):
+        st.write(f'''
+                 Quellen:  
+                 Landesstelle für Statistik,  
+                 Grundstückspreise: QUELLE HIER EINFÜGEN!!!
+                 ''')
 
 ## BEVÖLKERUNG NACH ALTER
-st.write("#### Einwohner nach Altersgruppen")
+st.write("#### Bevölkerung nach Altersgruppen")
 
 df = get_data('bevoelkerung.csv')
 #df = filter_gkz(df, 'GKZ')
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-
+anteil_anzahl = st.toggle('Anteil/Anzahl', value=True)
 #df['GKZ'] = df['GKZ'].astype(str)
 #df['JAHR'] = df['JAHR'].astype(str)
 #df = df.groupby(['JAHR', 'GRUPPE']).agg({'ANZAHL': 'sum'}).reset_index()
 #df = df[['JAHR', 'GRUPPE', 'ANZAHL']]
 #df.replace({'0-19': 'bis 20 Jahre', '20-64': 'zw. 20 und 64 Jahren', '65+': 'über 65 Jahre'}, inplace=True)
-df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 group_order = ['bis 20 Jahre', 'zw. 20 und 64 Jahren', 'über 65 Jahre']
-stacked_bar_chart = alt.Chart(df).mark_bar().encode(
-x=alt.X('JAHR:O', title='Jahr'),  
-y=alt.Y('ANZAHL:Q', title='Anzahl'),
-color=alt.Color('GRUPPE:N', 
-                title='Altersgruppe', 
-                sort=group_order, 
-                scale=alt.Scale(domain=group_order, range=palette),
-                legend=alt.Legend(orient='bottom',
-                                direction='vertical',
-                                columns=3)),
-order=alt.Order('GRUPPE:N', 
-                sort='ascending'),
-tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
-         alt.Tooltip('GRUPPE:N', title='Altersgruppe'),
-         alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')],
-).properties(
-width=800,
-height=600
-).configure_axis(
-    titleFontWeight='bold'
-).configure_legend(
-    titleFontWeight='bold'  
-)
+
+if (anteil_anzahl == False):
+    df['ANTEIL'] = df['ANZAHL'] / df.groupby('JAHR')['ANZAHL'].transform('sum') * 100
+    df['ANTEIL_FORMATTED'] = df['ANTEIL'].apply(lambda x: handle_comma(str(round(x,1))))
+    stacked_bar_chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
+        y=alt.Y('ANTEIL:Q', title='Anteil'),
+        color=alt.Color('GRUPPE:N', 
+                        title='Altersgruppe', 
+                        sort=group_order, 
+                        scale=alt.Scale(domain=group_order, range=palette),
+                        legend=alt.Legend(orient='bottom',
+                                        direction='vertical',
+                                        columns=3)),
+        order=alt.Order('GRUPPE:N', 
+                        sort='ascending'),
+        tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
+                alt.Tooltip('GRUPPE:N', title='Altersgruppe'),
+                alt.Tooltip('ANTEIL_FORMATTED:N', title='Anteil')],
+        ).properties(
+                width=800,
+                height=600
+                ).configure_axis(
+                    titleFontWeight='bold'
+                ).configure_legend(
+                    titleFontWeight='bold'  
+                ).properties(
+                usermeta={
+                    "embedOptions": custom_locale
+                }
+            )
+else:
+    df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
+
+
+    stacked_bar_chart = alt.Chart(df).mark_bar().encode(
+        x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
+        y=alt.Y('ANZAHL:Q', title='Anzahl'),
+        color=alt.Color('GRUPPE:N', 
+                        title='Altersgruppe', 
+                        sort=group_order, 
+                        scale=alt.Scale(domain=group_order, range=palette),
+                        legend=alt.Legend(orient='bottom',
+                                        direction='vertical',
+                                        columns=3)),
+        order=alt.Order('GRUPPE:N', 
+                        sort='ascending'),
+        tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
+                alt.Tooltip('GRUPPE:N', title='Altersgruppe'),
+                alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')],
+        ).properties(
+                width=800,
+                height=600
+                ).configure_axis(
+                    titleFontWeight='bold'
+                ).configure_legend(
+                    titleFontWeight='bold'  
+                ).properties(
+                usermeta={
+                    "embedOptions": custom_locale
+                }
+            )
 
 if not df.empty:
     st.altair_chart(stacked_bar_chart, use_container_width=True)
@@ -131,7 +175,7 @@ only_line_chart = alt.Chart(df_saldo).mark_line(size=5).encode(
 group_order = ['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', 'Abwanderung Ö', 'Zuwanderung Ausland', 'Abwanderung Ausland']
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
-    x=alt.X('JAHR:O', title='Jahr'),  
+    x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
     y=alt.Y('ANZAHL:Q', title='Anzahl', #scale=alt.Scale(domain=[-max_value/2, max_value/2])
             ), 
     color=alt.Color('TYPE:N', 
@@ -186,8 +230,8 @@ df['Preis_FORMATTED'] = df['Preis'].apply(lambda x: handle_comma(x))
 group_order=['< 5.000 EW', '5.000 - 10.000 EW', '10.000 - 50.000 EW', '> 50.000 EW']
 
 line_chart = alt.Chart(df).mark_line(size=5).encode(
-    x=alt.X('JAHR:O', title='Jahr'),
-    y='Preis:Q',
+    x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=0)),
+    y=alt.Y('Preis:Q', title='Preis pro m²'),
     color=alt.Color('GEMTYPE:N', 
                     title='Gemeinden mit ...',
                     sort=group_order,
@@ -195,7 +239,7 @@ line_chart = alt.Chart(df).mark_line(size=5).encode(
                     direction='vertical',
                     columns=4),
                     scale=alt.Scale(range=[palette[0], palette[1], palette[2], palette[3]])),  
-    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis_FORMATTED:N', title='Preis')]
+    tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), alt.Tooltip('Preis_FORMATTED:N', title='Preis pro m²')]
 ).properties(
     width=800,
     height=600
@@ -252,7 +296,7 @@ df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 group_order = ['bis 1960']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
-x=alt.X('JAHR:O', title='Jahr'),  
+x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=0)),  
 y=alt.Y('ANZAHL:Q', title='Anzahl'),
 color=alt.Color('BAUPERIODE_A:N', 
                 title='Bauperiode', 
