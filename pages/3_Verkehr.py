@@ -49,12 +49,15 @@ with st.sidebar:
 
     select_trend_line = st.checkbox('Trendlinie', True)
 
-    st.sidebar.write("<p style='text-align: center;'><em>Quelle: ASFINAG - Verkehrszählung.</em></p>", unsafe_allow_html=True)
-
-    st.image("gfx/stat_ktn_logo.png", use_container_width=True)
+    st.image("gfx/stat_ktn_logo.png", width=190)
     st.text('')
-    st.image("gfx/stat_stmk_logo.png", use_container_width=True)
+    st.image("gfx/stat_stmk_logo.png", width=150)
     st.text('')
+    with st.expander(f''':orange[**INFO**]''', expanded=False):
+        st.write(f'''
+                 Quelle:  
+                 ASFINAG - Verkehrszählung.
+                 ''')
 
 #st.write(f"### Anzahl der gesamten Kfz im Bereich {selected_value} für beide Fahrtrichtungen")
 #df_3 = get_messstelle_data(102, select_start_jahr, select_end_jahr, st.session_state.first_choice, st.session_state.second_choice, select_messstelle(selected_value))
