@@ -34,7 +34,7 @@ with st.sidebar:
         st.write(f'''
                  Quellen:  
                  Landesstelle für Statistik,  
-                 Grundstückspreise: QUELLE HIER EINFÜGEN!!!
+                 Grundstückspreise: Statistik Austria.
                  ''')
 
 ## BEVÖLKERUNG NACH ALTER
