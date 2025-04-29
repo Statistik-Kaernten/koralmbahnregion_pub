@@ -8,6 +8,19 @@ import numpy as np
 #from bokeh.models import ColumnDataSource
 #from bokeh.layouts import column
 
+tourismus_palette = ['#7586ff', 
+                 '#98a9ff', 
+                 '#c8d9ff',  
+                 '#afe1f4', 
+                 '#ffc556', 
+                 '#ffbf00', 
+                 '#f6977a',
+                 '#fa8072',
+                 '#f9cb9c', 
+                 '#feeece',
+                 '#003783', 
+                 '#00076d']
+
 def LinearRegression(df: pd.DataFrame) -> pd.DataFrame:
 
     df['DATUM'] = pd.to_datetime(df['DATUM'])
