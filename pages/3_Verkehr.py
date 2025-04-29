@@ -5,16 +5,12 @@ from customize import *
 from misc.gkzList import *
 
 
-#from server import *
-#from create_charts import create_linechart
-#from custom import *
-
 ## PALETTE
 palette = get_palette()
 
-st.set_page_config(page_title="Verkehr", layout="wide")
+st.set_page_config(page_title="Verkehr in der Koralmregion", layout="wide")
 
-st.write('# Verkehr')
+st.write('# Verkehr in der Koralmregion')
 st.sidebar.title("Einstellungen")
 
 
@@ -24,17 +20,12 @@ def select_messstelle(values: str) -> str:
         return key[0]
     else:
         return None
-    
 
-#def min_startjahr() -> int:
-#    df: pd.DataFrame = get_data(100, 1900, 2100, st.session_state.first_choice, st.session_state.second_choice, select_messstelle(selected_value))
-#    return int(df['DATUM'].min().year)
-
-
-# CONSTANTS
-START_JAHR: int = 2012# min_startjahr()
+## CONSTANTS
+START_JAHR: int = 2012
 END_JAHR: int = 2024
 
+## SIDEBAR
 with st.sidebar:
     selected_value = st.selectbox('Zählstelle:', zaehlstellen.values(), index=5)
 
@@ -53,17 +44,15 @@ with st.sidebar:
     st.text('')
     st.image("gfx/stat_stmk_logo.png", width=150)
     st.text('')
-    with st.expander(f''':orange[**INFO**]''', expanded=False):
+    with st.expander(f''':orange[**Info**]''', expanded=False):
         st.write(f'''
                  Quelle:  
                  ASFINAG - Verkehrszählung.
                  ''')
-
-#st.write(f"### Anzahl der gesamten Kfz im Bereich {selected_value} für beide Fahrtrichtungen")
-#df_3 = get_messstelle_data(102, select_start_jahr, select_end_jahr, st.session_state.first_choice, st.session_state.second_choice, select_messstelle(selected_value))
-
-#st.altair_chart(create_linechart(df_3, select_trend_line), use_container_width=True)
-
+    with st.expander(f''':orange[**Definition**]''', expanded=False):
+        st.write(f'''
+                 
+                 ''')
 
 st.write(f"### Anzahl der Kfz kleiner 3,5t im Bereich {selected_value} beide Fahrtrichtungen")
 df = get_data('verkehrszaehlung.csv')
@@ -99,11 +88,3 @@ df['DATUM'] = pd.to_datetime(df['JAHR'].astype(str) + '-' + df['MONAT'].astype(s
 chart = create_linechart(verkehr_anpassen(df), select_trend_line)
 
 st.altair_chart(chart, use_container_width=True)
-
-#st.write(f"### Anzahl der Kfz größer 3,5t im Bereich {selected_value} beide Fahrtrichtungen")
-#df_2 = get_messstelle_data(101, select_start_jahr, select_end_jahr,  st.session_state.first_choice, st.session_state.second_choice, select_messstelle(selected_value))
-
-#st.altair_chart(create_linechart(df_2, select_trend_line), use_container_width=True)
-
-if __name__ == '__main__':
-    select_messstelle('530')

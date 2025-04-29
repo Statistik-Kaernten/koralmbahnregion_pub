@@ -30,18 +30,32 @@ with st.sidebar:
     st.text('')
     st.image("gfx/stat_stmk_logo.png", width=150)
     st.text('')
-    with st.expander(f''':orange[**INFO**]''', expanded=False):
-        st.write(f'''
-                 Dashboard Koralmbahnregionsindex, BETA-Version 1.1 vom 10.04.2025, erstellt von Martin Writz, BSc.,
-                 Landesstelle für Statistik, Amt der Kärntner Landesregierung in Zusammenarbeit mit der Landesstelle für Statistik, Land Steiermark
 
-                Farbschema im Color Universal Design
-                 
-                please report bugs to martin.writz@ktn.gv.at or abt1.statistik@ktn.gv.at, feel free to contribute or commit a pull request directly  
+    with st.expander(f''':orange[**Info**]''', expanded=False):
+        st.write(f'''
+                 Koralmbahnregion-Dashboard  
+                 BETA-Version vom 29.04.2025,  
+                 erstellt von Martin Writz, BSc.,  
+                 Landesstelle für Statistik,   
+                 Amt der Kärntner Landesregierung  
+                   
+                 in Zusammenarbeit mit der   
+                 Landesstelle für Statistik,  
+                 Land Steiermark 
+                  
+                Farbschema im Color Universal Design  
+                  
+                please report bugs to  
+                martin.writz@ktn.gv.at  
+                or  
+                abt1.statistik@ktn.gv.at,  
+                 feel free to contribute  
+                 or  
+                 commit a pull request directly  
                  ''')
 
 ## CONTENT    
-col1, col2, col3, col4 = st.columns([3, 0.5, 0.5, 1])
+col1, col2, col3= st.columns(3)
 
 # MAP
 with col1:
@@ -50,10 +64,11 @@ with col1:
     st.components.v1.html(html_content, width=1572//2, height=966//2, scrolling=False)
  
 # ABOUT
-with col4:
+with col3:
     with st.expander(f''':orange[**Koralmbahnregion**]''', expanded=True):
         st.write(f'''
-                 Die Koralmbahnregion, Definition Joanneum Research.  
+                 Die Koralmbahnregion, Definition nach Joanneum Research.  
+                 [Website](https://www.joanneum.at/policies/die-koralmbahn-und-ihre-regionaloekonomische-wirkung-ein-neuer-international-sichtbarer-ballungsraum-entsteht/)
                  ''')
 
 # pre-load data
