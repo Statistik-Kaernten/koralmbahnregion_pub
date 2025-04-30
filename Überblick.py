@@ -67,8 +67,16 @@ with col1:
 with col3:
     with st.expander(f''':orange[**Koralmbahnregion**]''', expanded=True):
         st.write(f'''
-                 Die Koralmbahnregion, Definition nach Joanneum Research.  
-                 [Website](https://www.joanneum.at/policies/die-koralmbahn-und-ihre-regionaloekonomische-wirkung-ein-neuer-international-sichtbarer-ballungsraum-entsteht/)
+                 Die Koralmbahnregion,  
+                 Definition nach Joanneum Research.  
+                 [Website](https://www.joanneum.at/policies/die-koralmbahn-und-ihre-regionaloekonomische-wirkung-ein-neuer-international-sichtbarer-ballungsraum-entsteht/)  
+                   
+                 Das Koralmbahnprojekt verfolgt das Ziel,  
+                 dass Kärnten und die Steiermark zusammenwachsen.  
+                 Dieses Dashboard bietet eine Datensammlung gegliedert  
+                 in den vier Bereichen Bevölkerung, Wirtschaft, Verkehr  
+                 und Bildung für die definierte Koralmbahnregion um die  
+                 Entwicklungen darstellen zu können.
                  ''')
 
 # pre-load data

@@ -38,7 +38,9 @@ with st.sidebar:
                  ''')
     with st.expander(f''':orange[**Definition**]''', expanded=False):
         st.write(f'''
+                 **Höchste abgeschlossene Ausbildung:** Umfasst die innerhalb des regulären Bildungswesens erworbenen höchsten Bildungsabschlüsse der Bevölkerung. Die Stufen der höchsten abgeschlossenen Ausbildung werden gegliedert nach Kategorien des österreichischen Bildungssystems.
                  
+                 **Pendelbewegung Schulbesuch und Studierende:** Die Statistik über die Pendelbewegung Schulbesuch und Studierende zeigt auf, welche Wege von Personen welche die Schule besuchen und Studierenden zurückgelegt werden.
                  ''')
 
 ### Höchste abgeschlossene Ausbildung der 20 bis 64-Jährigen ### 

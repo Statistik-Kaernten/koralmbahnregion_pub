@@ -37,8 +37,17 @@ with st.sidebar:
                  Grundstückspreise: Statistik Austria.
                  ''')
     with st.expander(f''':orange[**Definition**]''', expanded=False):
-        st.write(f'''
-                 
+        st.write(f''' 
+                **Bevölkerung:** Umfasst alle Personen, die zum Stichtag 01.01. des jeweiligen Jahres mit Hauptwohnsitz in der Koralmbahnregion gezählt wurden.
+                
+                **Wanderung:** Beschreibt die räumliche Mobilität von Personen zur Errichtung eines dauerhaften Hauptwohnsitzes.
+
+                **Durchschnittliche Grundstückspreise:** Bilden das durchschnittliche Preisniveau von Grundstücken in der Koralmbahnregion ab. Zur Berechnung der Werte des Zieljahres werden auch die Transaktionen der vier Vorjahre berücksichtigt (Regressionsmodell).
+
+                **Wohnung:** Bezeichnet baulich getrennte Einheiten mit eigenem Zugang von der Straße oder einem Stiegenhaus in dauerhaften Gebäuden, die für Wohnzwecke geeignet sind.
+                
+                **Bauperiode:** Bezeichnet den Zeitraum, in dem das Errichtungsdatum des Gebäudes liegt.
+
                  ''')
 
 ### Bevölkerung nach Altersgruppen ###

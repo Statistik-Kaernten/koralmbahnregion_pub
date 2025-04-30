@@ -40,7 +40,20 @@ with st.sidebar:
                  ''')
     with st.expander(f''':orange[**Definition**]''', expanded=False):
         st.write(f'''
-                 
+                **Ein- und auspendelnde Erwerbstätige:** Die Statistik über die ein- und auspendelnden Erwerbstätigen zeigt auf, welche Wege von Erwerbstätigen zurückgelegt werden, um den zu erreichen.
+
+                **Arbeitsstätte:** Ist definiert als jede auf Dauer eingerichtete, durch Name (oder Bezeichnung) und Anschrift gekennzeichnete Einheit, in der mindestens eine Person erwerbstätig ist.
+
+                **Betriebsgrößenstruktur:** Zuordnung der Unternehmen nach der Anzahl ihrer Beschäftigten:  
+                 Kleinstunternehmen: 1-9,  
+                 Kleinunternehmen: 10-49,  
+                 Mittlere Unternehmen: 50-249,  
+                 Großunternehmen: ab 250 Beschäftigte.
+
+                **Arbeitslose:** Personen, welche beim AMS als arbeitslos gemeldet sind.
+
+                **Nächtigungen (Tourismus):** Die monatlichen Nächtigungen der Gäste aus dem In- und Ausland werden im Rahmen der Beherbergungsstatistik und auf Basis der Tourismus-Statistik-Verordnung erhoben.
+
                  ''')
 
 ### Ein- und  auspendelnde Erwerbstätige ###
