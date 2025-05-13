@@ -75,5 +75,3 @@ def createMap():
 
     pp = column(p, sizing_mode="stretch_width")
     return pp
-if __name__ == '__main__':
-    show(createMap())

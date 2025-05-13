@@ -86,5 +86,4 @@ with col2:
 # pre-load data
 data_lst = ['bevoelkerung', 'wanderungen', "wohnungen", "erwerbstaetige", "arbeitsstaetten", "tourismus", "schueler", "hoest_ausbildung", "verkehrszaehlung"]
 for elem in data_lst:
-    print(elem)
     df = get_data(f'{elem}.csv')
