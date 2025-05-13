@@ -122,7 +122,11 @@ df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 group_order = ['Kleinstunternehmen', 'Kleinunternehmen', 'Mittlere Unternehmen', 'Großunternehmen']
 
-log_onoff = st.toggle('lineare/logarithmische Skala', value=True)
+
+if not df.empty:
+    log_onoff = st.radio("linear/log", ['lineare Skala', 'logarithmische Skala'], label_visibility='hidden', index=1) 
+else:
+    log_onoff = 'lineare Skala'
 
 color_encoding = alt.Color('TYPE:N',
                            sort=group_order,
@@ -130,7 +134,9 @@ color_encoding = alt.Color('TYPE:N',
                            legend=alt.Legend(orient='bottom', direction='vertical', columns=5),
                            scale=alt.Scale(range=palette))
 
-if (log_onoff==True):
+
+if (log_onoff=='logarithmische Skala'):
+
     line_chart = alt.Chart(df).mark_line(size=4).encode(
         x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),
         y=alt.Y('sum(ANZAHL)', title='Anzahl (log)').scale(type="log"),
@@ -224,8 +230,16 @@ monats_name_mapping = {'1': 'Jänner', '2': 'Feber', '3': 'März', '4':' April',
 
 df = get_data('tourismus.csv')
 
-year_month: bool = st.toggle('Jahr/Monat', value=True)
-if(year_month==True):   
+df = df[df['JAHR'] >= select_start_jahr]
+df = df[df['JAHR'] <= select_end_jahr]
+df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
+
+if not df.empty:
+    year_month = st.radio("Jahr/Monat", ['Jahr', 'Monat'], label_visibility='hidden', index=1)
+else:
+    year_month = 'Monat'
+if(year_month=='Monat'):   
+
     df = df.groupby(['JAHR', 'MONAT']).agg({'UEBERNACHTUNGEN': 'sum'}).reset_index()
 else:
     df = df.groupby(['JAHR']).agg({'UEBERNACHTUNGEN': 'sum'}).reset_index()
@@ -236,13 +250,10 @@ else:
 
     df = pd.concat([df, df_kat2], ignore_index=True)
 
-df = df[df['JAHR'] >= select_start_jahr]
-df = df[df['JAHR'] <= select_end_jahr]
-df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
-
 df['ANZAHL_FORMATTED'] = df['UEBERNACHTUNGEN'].apply(lambda x: add_thousand_dot(str(x)))
 
-if(year_month==True):
+if(year_month=='Monat'):
+
     df['MONAT_NAME'] = df['MONAT'].apply(lambda x: monats_name_mapping.get(str(x)))
     stacked_bar_chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('JAHR:O', 

@@ -56,11 +56,12 @@ st.write("#### Bevölkerung nach Altersgruppen")
 df = get_data('bevoelkerung.csv')
 
 df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
-anteil_anzahl = st.toggle('Anteil/Anzahl', value=True)
+
+anteil_anzahl = st.radio("Anteil/Anzahl", ['Anteil', 'Anzahl'], label_visibility='hidden', index=1)
 
 group_order = ['bis 20 Jahre', 'zw. 20 und 64 Jahren', 'über 65 Jahre']
 
-if (anteil_anzahl == False):
+if (anteil_anzahl == 'Anteil'):
     df['ANTEIL'] = df['ANZAHL'] / df.groupby('JAHR')['ANZAHL'].transform('sum') * 100
     df['ANTEIL_FORMATTED'] = df['ANTEIL'].apply(lambda x: handle_comma(str(round(x,1))))
     stacked_bar_chart = alt.Chart(df).mark_bar().encode(
