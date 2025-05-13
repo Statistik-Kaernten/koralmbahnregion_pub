@@ -13,7 +13,7 @@ from misc.gkzList import *
 def createMap():
     gkz_List = gkzList['gkz']
     #gkz_List.extend([''] * 233)
-    gdf = gpd.read_file('koralm2025.json') # read geojson file
+    gdf = gpd.read_file('data/koralm2025.json') # read geojson file
     gdf = gdf.explode(ignore_index=True) # make multipolygon to separate polygons
     gdf = gdf.drop(index=179) # delete exclave hitzendorf
         
