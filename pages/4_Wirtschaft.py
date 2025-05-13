@@ -122,17 +122,21 @@ df = filter_start_end_year(df, select_start_jahr, select_end_jahr)
 df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 group_order = ['Kleinstunternehmen', 'Kleinunternehmen', 'Mittlere Unternehmen', 'Großunternehmen']
 
+
 if not df.empty:
     log_onoff = st.radio("linear/log", ['lineare Skala', 'logarithmische Skala'], label_visibility='hidden', index=1) 
 else:
     log_onoff = 'lineare Skala'
+
 color_encoding = alt.Color('TYPE:N',
                            sort=group_order,
                            title='Größengruppe',
                            legend=alt.Legend(orient='bottom', direction='vertical', columns=5),
                            scale=alt.Scale(range=palette))
 
+
 if (log_onoff=='logarithmische Skala'):
+
     line_chart = alt.Chart(df).mark_line(size=4).encode(
         x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),
         y=alt.Y('sum(ANZAHL)', title='Anzahl (log)').scale(type="log"),
@@ -225,6 +229,7 @@ st.write('#### Nächtigungen nach Jahr/Monat')
 monats_name_mapping = {'1': 'Jänner', '2': 'Feber', '3': 'März', '4':' April', '5': 'Mai', '6': 'Juni', '7': 'Juli', '8': 'August', '9': 'September', '10': 'Oktober', '11': 'November', '12': 'Dezember'}
 
 df = get_data('tourismus.csv')
+
 df = df[df['JAHR'] >= select_start_jahr]
 df = df[df['JAHR'] <= select_end_jahr]
 df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
@@ -234,6 +239,7 @@ if not df.empty:
 else:
     year_month = 'Monat'
 if(year_month=='Monat'):   
+
     df = df.groupby(['JAHR', 'MONAT']).agg({'UEBERNACHTUNGEN': 'sum'}).reset_index()
 else:
     df = df.groupby(['JAHR']).agg({'UEBERNACHTUNGEN': 'sum'}).reset_index()
@@ -244,10 +250,10 @@ else:
 
     df = pd.concat([df, df_kat2], ignore_index=True)
 
-
 df['ANZAHL_FORMATTED'] = df['UEBERNACHTUNGEN'].apply(lambda x: add_thousand_dot(str(x)))
 
 if(year_month=='Monat'):
+
     df['MONAT_NAME'] = df['MONAT'].apply(lambda x: monats_name_mapping.get(str(x)))
     stacked_bar_chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('JAHR:O', 
