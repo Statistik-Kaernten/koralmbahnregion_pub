@@ -9,7 +9,7 @@ START_JAHR: int = 2002
 END_JAHR: int = 2023
 
 ## PAGE CONFIG
-st.set_page_config(page_title="Koralmbahnregion-Index Überblick", layout="wide")
+st.set_page_config(page_title="Koralmbahnregion-Index Überblick", layout="wide", initial_sidebar_state='expanded')
 
 ## SESSION STATES
 if 'gkz_list' not in st.session_state:
