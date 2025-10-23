@@ -1,13 +1,7 @@
-from bokeh.models import LogColorMapper
-from bokeh.palettes import Viridis6 as palette
-from bokeh.plotting import figure, show
-from bokeh.sampledata.unemployment import data as unemployment
-from bokeh.sampledata.us_counties import data as counties
+from bokeh.plotting import figure
 from bokeh.layouts import column
-from streamlit_bokeh import streamlit_bokeh
-import streamlit as st
 import geopandas as gpd
-from bokeh.models import (ColumnDataSource, HoverTool, CustomJS, TapTool, Select, SetValue)
+from bokeh.models import (ColumnDataSource, HoverTool)
 from misc.gkzList import *
 
 def createMap():
