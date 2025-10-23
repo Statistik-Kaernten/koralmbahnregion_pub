@@ -4,7 +4,7 @@ from customize import *
 
 # PAGE CONSTANTS
 START_JAHR: int = 2011
-END_JAHR: int = 2023
+END_JAHR: int = 2024
 
 ## PAGE CONFIG
 st.set_page_config(page_title="Bildung in der Koralmbahnregion", layout="wide")
