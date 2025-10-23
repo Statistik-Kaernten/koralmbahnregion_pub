@@ -36,7 +36,7 @@ with st.sidebar:
     with st.expander(f''':orange[**Info**]''', expanded=False):
         st.write(f'''
                  Koralmbahnregion-Dashboard  
-                 aktualisiert am 29.04.2025,  
+                 aktualisiert am 23.10.2025,  
                  erstellt von Martin Writz, BSc.,  
                  Landesstelle für Statistik,   
                  Amt der Kärntner Landesregierung  
