@@ -4,7 +4,7 @@ from customize import *
 
 # PAGE CONSTANTS
 START_JAHR: int = 2002
-END_JAHR: int = 2024
+END_JAHR: int = 2025
 
 ## PAGE CONFIG
 st.set_page_config(page_title="Bevölkerung in der Koralmbahnregion", layout="wide")
