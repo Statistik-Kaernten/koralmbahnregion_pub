@@ -2,11 +2,6 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import numpy as np
-#from sklearn.linear_model import LinearRegression
-#from bokeh.plotting import figure
-#from bokeh.io import show
-#from bokeh.models import ColumnDataSource
-#from bokeh.layouts import column
 
 tourismus_palette = ['#7586ff', 
                  '#98a9ff', 
@@ -77,7 +72,6 @@ def custom_css_sytles():
 def get_palette():
     cud_colors = ['#003B5C', '#FFB81C', '#55B0B9', '#F56D8D', '#9E2A2F', '#5B8C5A', '#CC79A7']
     return cud_colors
-
 
 def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
     palette = get_palette()
@@ -153,7 +147,3 @@ custom_locale = {
                                 "shortMonths": ["Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
                                     }
                 }
-                
-                
-if __name__ == '__main__':
-    pass
