@@ -8,7 +8,7 @@ from misc.gkzList import *
 ## PALETTE
 palette = get_palette()
 
-st.set_page_config(page_title="Verkehr in der Koralmregion", layout="wide")
+st.set_page_config(page_title="Verkehr in der Koralmbahnregion", layout="wide")
 
 st.write('# Verkehr in der Koralmregion')
 st.sidebar.title("Einstellungen")
