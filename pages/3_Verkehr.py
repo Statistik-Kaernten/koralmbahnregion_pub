@@ -10,7 +10,7 @@ palette = get_palette()
 
 st.set_page_config(page_title="Verkehr in der Koralmbahnregion", layout="wide")
 
-st.write('# Verkehr in der Koralmregion')
+st.write('# Verkehr in der Koralmbahnregion')
 st.sidebar.title("Einstellungen")
 
 
