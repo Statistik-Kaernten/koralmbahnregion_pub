@@ -1,5 +1,4 @@
-streamlit
-bokeh
-streamlit_bokeh
-bokeh_sampledata
-geopandas
+streamlit>=1.30
+shapely>=2.0
+pyproj>=3.6
+pandas>=2.2
