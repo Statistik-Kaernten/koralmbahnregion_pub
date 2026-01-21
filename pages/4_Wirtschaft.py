@@ -109,7 +109,7 @@ combined_chart = alt.layer(stacked_bar_chart, line_chart, white_line, hover_poin
         )
 
 if not df.empty:
-    st.altair_chart(combined_chart, use_container_width=True)
+    st.altair_chart(combined_chart, width='stretch')
 else:
     st.write(NO_DATA)
 
@@ -182,7 +182,7 @@ else:
     )
 
 if not df.empty:    
-    st.altair_chart(combined_chart, use_container_width=True)
+    st.altair_chart(combined_chart, width='stretch')
 else:
     st.write(NO_DATA)
 
@@ -218,7 +218,7 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     titleFontWeight='bold'  
 )
 if not df.empty:
-    st.altair_chart(stacked_bar_chart, use_container_width=True)
+    st.altair_chart(stacked_bar_chart, width='stretch')
 else:
     st.write(NO_DATA)
 
@@ -335,6 +335,6 @@ else:
             )
 
 if not df.empty:
-    st.altair_chart(stacked_bar_chart, use_container_width=True)
+    st.altair_chart(stacked_bar_chart, width='stretch')
 else:
     st.write(NO_DATA)

@@ -63,7 +63,7 @@ df['DATUM'] = pd.to_datetime(df['JAHR'].astype(str) + '-' + df['MONAT'].astype(s
 
 chart = create_linechart(verkehr_anpassen(df), select_trend_line)
 
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(chart, width='stretch')
 
 
 st.write(f"### Anzahl der Kfz größer 3,5t im Bereich {selected_value} beide Fahrtrichtungen")
@@ -75,7 +75,7 @@ df['DATUM'] = pd.to_datetime(df['JAHR'].astype(str) + '-' + df['MONAT'].astype(s
 
 chart = create_linechart(verkehr_anpassen(df), select_trend_line)
 
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(chart, width='stretch')
 
 
 st.write(f"### Anzahl aller Kfz im Bereich {selected_value} beide Fahrtrichtungen")
@@ -87,4 +87,4 @@ df['DATUM'] = pd.to_datetime(df['JAHR'].astype(str) + '-' + df['MONAT'].astype(s
 
 chart = create_linechart(verkehr_anpassen(df), select_trend_line)
 
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(chart, width='stretch')
