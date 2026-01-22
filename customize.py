@@ -81,7 +81,7 @@ def create_linechart(df: pd.DataFrame, reg: int) -> pd.DataFrame:
 
     chart = alt.Chart(df).mark_line(color=palette[1], size=4).encode(
         x=alt.X('DATUM:T', title='Datum', axis=alt.Axis(format='%Y-%m', labelAngle=45)),
-        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max))),
+        y=alt.Y('ANZAHL:Q', title='Anzahl', scale=alt.Scale(domain=(y_min, y_max)), axis=alt.Axis(format='~s')),
         tooltip=[alt.Tooltip('DATUM:T', title='Datum'), 
              #alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
              alt.Tooltip('ANZAHL_FORMATTED:N', title='Anzahl')]
