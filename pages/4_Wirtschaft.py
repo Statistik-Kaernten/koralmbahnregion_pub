@@ -77,13 +77,13 @@ line_chart = alt.Chart(df_saldo).mark_line(size=4).encode(
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
-    y=alt.Y('ANZAHL:Q', title='Anzahl'), 
+    y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s')), 
     color=alt.Color('TYPE:N', 
                     title='Pendelndetyp', 
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=3), 
+                    columns=2), 
                     scale=alt.Scale(domain=['Einpendelnde Ktn/Stmk', 'Auspendelnde Ktn/Stmk', 'Einpendelnde Ö', 'Auspendelnde Ö', 'Saldo'],
                                     range=[palette[0], palette[0], palette[1], palette[1], palette[6]])),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
@@ -131,7 +131,7 @@ else:
 color_encoding = alt.Color('TYPE:N',
                            sort=group_order,
                            title='Größengruppe',
-                           legend=alt.Legend(orient='bottom', direction='vertical', columns=5),
+                           legend=alt.Legend(orient='bottom', direction='vertical', columns=2),
                            scale=alt.Scale(range=palette))
 
 
@@ -139,7 +139,7 @@ if (log_onoff=='logarithmische Skala'):
 
     line_chart = alt.Chart(df).mark_line(size=4).encode(
         x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),
-        y=alt.Y('sum(ANZAHL)', title='Anzahl (log)').scale(type="log"),
+        y=alt.Y('sum(ANZAHL)', title='Anzahl (log)', axis=alt.Axis(format='~s')).scale(type="log"),
         color=color_encoding,
         tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
                 alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
@@ -167,7 +167,7 @@ if (log_onoff=='logarithmische Skala'):
 else:
     combined_chart = alt.Chart(df).mark_line(size=4).encode(
         x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),
-        y=alt.Y('sum(ANZAHL)', title='Anzahl'),
+        y=alt.Y('sum(ANZAHL)', title='Anzahl', axis=alt.Axis(format='~s')),
         color=color_encoding,
         tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
                 alt.Tooltip('TYPE:N', title='Arbeitsstätte'),
@@ -199,7 +199,7 @@ df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('DATUM:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
-    y=alt.Y('ANZAHL:Q', title='Anzahl'), 
+    y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s')), 
     color=alt.Color('GESCHLECHT:N', 
                     title='Geschlecht', 
                     legend=alt.Legend(orient='bottom',
@@ -260,7 +260,8 @@ if(year_month=='Monat'):
                     title='Jahr',
                     axis=alt.Axis(labelAngle=45)),
             y=alt.Y('UEBERNACHTUNGEN:Q', 
-                    title='Anzahl'
+                    title='Anzahl',
+                    axis=alt.Axis(format='~s')
                     ),
             color=alt.Color(
                 'MONAT:N', 
@@ -268,7 +269,7 @@ if(year_month=='Monat'):
                 scale=alt.Scale(range=tourismus_palette),
                 legend=alt.Legend(orient='bottom',
                         direction='vertical',
-                        columns=6, 
+                        columns=4, 
                         labelExpr='datum.value == "1" ? "Jänner" : '
                     'datum.value == "2" ? "Feber" : '
                     'datum.value == "3" ? "März" : '

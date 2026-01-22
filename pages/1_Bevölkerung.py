@@ -73,7 +73,7 @@ if (anteil_anzahl == 'Anteil'):
                         scale=alt.Scale(domain=group_order, range=palette),
                         legend=alt.Legend(orient='bottom',
                                         direction='vertical',
-                                        columns=3)),
+                                        columns=2)),
         order=alt.Order('GRUPPE:N', 
                         sort='ascending'),
         tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
@@ -95,14 +95,14 @@ else:
     df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
     stacked_bar_chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
-        y=alt.Y('ANZAHL:Q', title='Anzahl'),
+        y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s')),
         color=alt.Color('GRUPPE:N', 
                         title='Altersgruppe', 
                         sort=group_order, 
                         scale=alt.Scale(domain=group_order, range=palette),
                         legend=alt.Legend(orient='bottom',
                                         direction='vertical',
-                                        columns=3)),
+                                        columns=2)),
         order=alt.Order('GRUPPE:N', 
                         sort='ascending'),
         tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
@@ -153,14 +153,14 @@ group_order = ['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', '
 
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
-    y=alt.Y('ANZAHL:Q', title='Anzahl', 
+    y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s') 
             ), 
     color=alt.Color('TYPE:N', 
                      title='Wanderungstyp', 
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=4), 
+                    columns=2), 
                     scale=alt.Scale(domain=['Zuwanderung KTN/STK', 'Abwanderung KTN/STK', 'Zuwanderung Ö', 'Abwanderung Ö', 'Zuwanderung Ausland', 'Abwanderung Ausland', 'Saldo'], 
                                     range=[palette[0], palette[0], palette[1], palette[1], palette[2], palette[2], palette[6]])
                    ),
@@ -218,7 +218,7 @@ line_chart = alt.Chart(df).mark_line(size=5).encode(
                     sort=group_order,
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=4),
+                    columns=2),
                     scale=alt.Scale(range=[palette[0], palette[1], palette[2], palette[3]])),  
     )
 
@@ -248,13 +248,13 @@ df['ANZAHL_FORMATTED'] = df['ANZAHL'].apply(lambda x: add_thousand_dot(str(x)))
 group_order = ['bis 1960']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
 x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=0)),  
-y=alt.Y('ANZAHL:Q', title='Anzahl'),
+y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s')),
 color=alt.Color('BAUPERIODE_A:N', 
                 title='Bauperiode', 
                 sort=group_order, 
                 legend=alt.Legend(orient='bottom',
                                 direction='vertical',
-                                columns=8), 
+                                columns=2), 
                 scale=alt.Scale(range=palette)),
 order=alt.Order('ANZAHL:Q', 
                 sort='descending'),

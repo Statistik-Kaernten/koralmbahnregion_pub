@@ -64,7 +64,7 @@ stacked_bar_chart = alt.Chart(df).mark_bar().encode(
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                                     direction='vertical',
-                                    columns=4), 
+                                    columns=2), 
                     scale=alt.Scale(range=palette)
                     ),
     order=alt.Order('ORDER:O', 
@@ -108,13 +108,13 @@ line_chart = alt.Chart(df_saldo).mark_line(size=4).encode(
 group_order = ['Einpendelnde Ktn/Stmk', 'Auspendelnde Ktn/Stmk', 'Einpendelnde Ö', 'Auspendelnde Ö']
 stacked_bar_chart = alt.Chart(df).mark_bar().encode(
     x=alt.X('JAHR:O', title='Jahr', axis=alt.Axis(labelAngle=45)),  
-    y=alt.Y('ANZAHL:Q', title='Anzahl'), 
+    y=alt.Y('ANZAHL:Q', title='Anzahl', axis=alt.Axis(format='~s')), 
     color=alt.Color('TYPE:N', 
                     title='Pendelndetyp', 
                     sort=group_order, 
                     legend=alt.Legend(orient='bottom',
                     direction='vertical',
-                    columns=3), 
+                    columns=2), 
                     scale=alt.Scale(domain=['Einpendelnde Ktn/Stmk', 'Auspendelnde Ktn/Stmk', 'Einpendelnde Ö', 'Auspendelnde Ö', 'Saldo'], 
                                     range=[palette[0], palette[0], palette[1], palette[1], palette[6]])),
     tooltip=[alt.Tooltip('JAHR:O', title='Jahr'), 
