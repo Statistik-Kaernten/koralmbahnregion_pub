@@ -5,7 +5,7 @@ from customize import *
 
 # PAGE CONSTANTS
 START_JAHR: int = 2004
-END_JAHR: int = 2025
+END_JAHR: int = 2026
 
 ## PAGE CONFIG
 st.set_page_config(page_title="Wirtschaft in der Koralmbahnregion", layout="wide")
@@ -232,7 +232,7 @@ df = get_data('tourismus.csv')
 
 df = df[df['JAHR'] >= select_start_jahr]
 df = df[df['JAHR'] <= select_end_jahr]
-df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
+#df = df[df['JAHR'] < UNIVERSAL_END_YEAR]
 
 if not df.empty:
     year_month = st.radio("Jahr/Monat", ['Jahr', 'Monat'], label_visibility='hidden', index=1)
