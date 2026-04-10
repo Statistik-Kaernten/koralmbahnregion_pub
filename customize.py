@@ -123,7 +123,7 @@ def verkehr_anpassen(df: pd.DataFrame) -> pd.DataFrame:
     df = df.sort_values(['JAHR', 'MONAT'])
     df['DAYS'] = (df['DATUM'] - df['DATUM'].min()).dt.days
     df = LinearRegression(df)
-    df.drop(columns=['JAHR', 'MONAT', 'DAYS'], inplace=True, axis=1)
+    df.drop(columns=['JAHR', 'MONAT', 'DAYS'], inplace=True)
     return df
 
 ## custom locale
