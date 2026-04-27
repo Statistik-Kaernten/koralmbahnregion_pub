@@ -1,0 +1,12 @@
+.devcontainer
+.venv
+data_backup
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+.git
+.gitignore
+Dockerfile
+.github
