@@ -32,8 +32,8 @@ with st.sidebar:
     st.image("gfx/stat_stmk_logo.png", width=150)
     st.text('')
 
-    with st.expander(f''':orange[**Koralmbahnregion**]''', expanded=False):
-        st.write(f'''
+    with st.expander(''':orange[**Koralmbahnregion**]''', expanded=False):
+        st.write('''
                  Die Koralmbahnregion,  
                  Definition nach Joanneum Research.  
                  [Website](https://www.joanneum.at/policies/die-koralmbahn-und-ihre-regionaloekonomische-wirkung-ein-neuer-international-sichtbarer-ballungsraum-entsteht/)  
@@ -46,10 +46,10 @@ with st.sidebar:
                  Entwicklungen darstellen zu können.
                  ''')
 
-    with st.expander(f''':orange[**Info**]''', expanded=False):
-        st.write(f'''
+    with st.expander(''':orange[**Info**]''', expanded=False):
+        st.write('''
                  Koralmbahnregion-Dashboard  
-                 aktualisiert am 23.10.2025,  
+                 aktualisiert am 28.09.2026,  
                  erstellt von Martin Writz, BSc.,  
                  Landesstelle für Statistik,   
                  Amt der Kärntner Landesregierung  
@@ -63,7 +63,7 @@ with st.sidebar:
                 please report bugs to  
                 martin.writz@ktn.gv.at  
                 or  
-                abt1.statistik@ktn.gv.at,  
+                statistik@ktn.gv.at,  
                  feel free to contribute  
                  or  
                  commit a pull request directly  
