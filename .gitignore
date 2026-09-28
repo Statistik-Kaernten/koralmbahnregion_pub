@@ -2,3 +2,9 @@ __pycache__
 .env
 .venv
 data_backup
+.devcontainer
+.github
+.mypy_cache
+.streamlit
+daten_alt
+.vscode

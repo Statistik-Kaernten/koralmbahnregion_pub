@@ -23,7 +23,7 @@ def select_messstelle(values: str) -> str:
 
 ## CONSTANTS
 START_JAHR: int = 2012
-END_JAHR: int = 2024
+END_JAHR: int = 2027
 
 ## SIDEBAR
 with st.sidebar:
